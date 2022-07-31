@@ -1,0 +1,12 @@
+"None":
+    requirements:
+        - "protobuf/3.17.1"
+        - "libarcus/5.1.90@ultimaker/testing"
+        - "cpython/3.10.4"
+        - "zlib/1.2.12"
+"5.1.90":
+    requirements:
+        - "protobuf/3.17.1"
+        - "libarcus/5.1.90@ultimaker/testing"
+        - "cpython/3.10.4"
+        - "zlib/1.2.12"
