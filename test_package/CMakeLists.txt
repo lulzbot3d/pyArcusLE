@@ -1,14 +1,8 @@
-cmake_policy(SET CMP0091 NEW)
-project(PackageTest)
 cmake_minimum_required(VERSION 3.20)
+project(PackageTest)
 
-include(../cmake/StandardProjectSettings.cmake)
+find_package(pyarcus REQUIRED)
+find_package(protobuf 3.17.1 REQUIRED)
 
-find_package(arcus REQUIRED libarcus)
-
-add_executable(test test.cpp)
-
-target_link_libraries(test
-        PUBLIC
-        arcus::libarcus
-        )
+configure_file(test.py ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
+configure_file(test.proto ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
