@@ -38,7 +38,8 @@ on:
     push:
         paths:
             # FIXME: check the paths for this specific repo
-            - 'src/**'
+            - 'python/**'
+            - 'include/**'
             - 'test_package/**'
             - 'cmake/**'
             - 'conanfile.py'
