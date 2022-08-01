@@ -110,3 +110,4 @@ class ArcusConan(ConanFile):
             self.runenv_info.append_path("PYTHONPATH", os.path.join(self.package_folder, "site-packages"))
         else:
             self.runenv_info.append_path("PYTHONPATH", self.build_folder)
+            self.runenv_info.append_path("PYTHONPATH", os.path.join(self.build_folder, "pyArcus", "pyArcus"))
