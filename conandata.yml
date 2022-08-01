@@ -1,12 +1,12 @@
 "None":
     requirements:
         - "protobuf/3.17.1"
-        - "libarcus/5.1.90@ultimaker/testing"
+        - "arcus/(latest)@ultimaker/cura_8824"  # FIXME: once merged
         - "cpython/3.10.4"
         - "zlib/1.2.12"
-"5.1.90":
+"5.2.0":
     requirements:
         - "protobuf/3.17.1"
-        - "libarcus/5.1.90@ultimaker/testing"
+        - "libarcus/5.2.0@ultimaker/testing"
         - "cpython/3.10.4"
         - "zlib/1.2.12"

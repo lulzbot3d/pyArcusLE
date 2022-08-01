@@ -84,23 +84,11 @@ class ArcusConan(ConanFile):
         tc.generate()
 
     def layout(self):
-        self.folders.source = "."
-        try:
-            build_type = str(self.settings.build_type)
-        except ConanException:
-            raise ConanException("'build_type' setting not defined, it is necessary for cmake_layout()")
-        self.folders.build = f"cmake-build-{build_type.lower()}"
-        self.folders.generators = os.path.join(self.folders.build, "conan")
-        self.cpp.build.libdirs = ["."]
-        self.cpp.build.bindirs = ["."]
-
-        self.cpp.source.includedirs = ["include"]
-
+        cmake_layout(self)
         self.cpp.build.libdirs = [".", os.path.join("pyArcus", "pyArcus")]
 
         self.cpp.package.includedirs = ["include"]
         self.cpp.package.libdirs = ["site-packages"]
-        self.cpp.package.requires = ["libarcus::libarcus", "protobuf::protobuf", "cpython::cpython"]
 
         if self.settings.os in ["Linux", "FreeBSD", "Macos"]:
             self.cpp.package.components["pyarcus"].system_libs = ["pthread"]
@@ -115,8 +103,10 @@ class ArcusConan(ConanFile):
         packager.patterns.build.lib = ["*.so", "*.so.*", "*.a", "*.lib", "*.dylib", "*.pyd", "*.pyi"]
         packager.run()
 
+        files.files.rmdir(self, os.path.join(self.package_folder, "site-packages", "pyArcus"))
+
     def package_info(self):
         if self.in_local_cache:
-            self.runenv_info.append_path("PYTHONPATH", self.cpp_info.components["pyarcus"].lib_paths[0])
+            self.runenv_info.append_path("PYTHONPATH", os.path.join(self.package_folder, "site-packages"))
         else:
             self.runenv_info.append_path("PYTHONPATH", self.build_folder)

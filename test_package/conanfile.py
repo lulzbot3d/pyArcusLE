@@ -4,7 +4,6 @@ from io import StringIO
 from pathlib import Path
 
 from conan import ConanFile
-from conan.tools.cmake import CMakeToolchain, CMakeDeps, CMake
 from conan.tools.env import VirtualRunEnv
 from conans import tools
 from conans.errors import ConanException
@@ -15,25 +14,13 @@ class ArcusTestConan(ConanFile):
     generators = "VirtualRunEnv"
 
     def generate(self):
-        cmake = CMakeDeps(self)
-        cmake.generate()
-
         venv = VirtualRunEnv(self)
         venv.generate()
 
-        tc = CMakeToolchain(self, generator = "Ninja")
-        if self.settings.compiler == "Visual Studio":
-            tc.blocks["generic_system"].values["generator_platform"] = None
-            tc.blocks["generic_system"].values["toolset"] = None
-        tc.generate()
-
     def build(self):
-        if not tools.cross_building(self, skip_x64_x86 = True):
+        if not tools.cross_building(self):
             shutil.copy(Path(self.source_folder).joinpath("test.py"), Path(self.build_folder).joinpath("test.py"))
-
-        cmake = CMake(self)
-        cmake.configure()
-        cmake.build()
+            shutil.copy(Path(self.source_folder).joinpath("test.proto"), Path(self.build_folder).joinpath("test.proto"))
 
     def imports(self):
         if self.settings.os == "Windows" and not tools.cross_building(self, skip_x64_x86 = True):
@@ -41,7 +28,8 @@ class ArcusTestConan(ConanFile):
             self.copy("*.pyd", dst=".", src="@libdirs")
 
     def test(self):
-        test_buf = StringIO()
-        self.run(f"python test.py", env = "conanrun", output = test_buf)
-        if "True" not in test_buf.getvalue():
-            raise ConanException("pyArcus wasn't build correctly!")
+        if not tools.cross_building(self):
+            test_buf = StringIO()
+            self.run(f"python test.py", env = "conanrun", output = test_buf)
+            if "True" not in test_buf.getvalue():
+                raise ConanException("pyArcus wasn't build correctly!")
