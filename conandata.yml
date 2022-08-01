@@ -1,7 +1,7 @@
 "None":
     requirements:
         - "protobuf/3.17.1"
-        - "arcus/(latest)@ultimaker/cura_8824"  # FIXME: once merged
+        - "arcus/(latest)@ultimaker/testing"
         - "cpython/3.10.4"
         - "zlib/1.2.12"
 "5.2.0":
