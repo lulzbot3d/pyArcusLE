@@ -62,19 +62,13 @@ PyObject* Arcus::PythonMessage::__getattr__(const std::string& field_name) const
     case FieldDescriptor::TYPE_DOUBLE:
         return PyFloat_FromDouble(_reflection->GetDouble(*_message, field));
     case FieldDescriptor::TYPE_INT32:
-        [[fallthrough]]
     case FieldDescriptor::TYPE_FIXED32:
-        [[fallthrough]]
     case FieldDescriptor::TYPE_SINT32:
-        [[fallthrough]]
     case FieldDescriptor::TYPE_SFIXED32:
         return PyLong_FromLong(_reflection->GetInt32(*_message, field));
     case FieldDescriptor::TYPE_INT64:
-        [[fallthrough]]
     case FieldDescriptor::TYPE_FIXED64:
-        [[fallthrough]]
     case FieldDescriptor::TYPE_SINT64:
-        [[fallthrough]]
     case FieldDescriptor::TYPE_SFIXED64:
         return PyLong_FromLongLong(_reflection->GetInt64(*_message, field));
     case FieldDescriptor::TYPE_UINT32:
