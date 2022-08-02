@@ -1,33 +1,33 @@
-# Arcus
+# pyArcus
 
 <p align="center">
-    <a href="https://github.com/Ultimaker/libArcus/actions/workflows/conan-package.yml" alt="Conan Package">
-        <img src="https://github.com/Ultimaker/libarcus/actions/workflows/conan-package.yml/badge.svg" /></a>
-    <a href="https://github.com/Ultimaker/libArcus/issues" alt="Open Issues">
-        <img src="https://img.shields.io/github/issues/ultimaker/libarcus" /></a>
-    <a href="https://github.com/Ultimaker/libArcus/issues?q=is%3Aissue+is%3Aclosed" alt="Closed Issues">
-        <img src="https://img.shields.io/github/issues-closed/ultimaker/libarcus?color=g" /></a>
-    <a href="https://github.com/Ultimaker/libArcus/pulls" alt="Pull Requests">
-        <img src="https://img.shields.io/github/issues-pr/ultimaker/libarcus" /></a>
-    <a href="https://github.com/Ultimaker/libArcus/graphs/contributors" alt="Contributors">
-        <img src="https://img.shields.io/github/contributors/ultimaker/libarcus" /></a>
-    <a href="https://github.com/Ultimaker/libArcus" alt="Repo Size">
-        <img src="https://img.shields.io/github/repo-size/ultimaker/libarcus?style=flat" /></a>
-    <a href="https://github.com/Ultimaker/libArcus/blob/master/LICENSE" alt="License">
-        <img src="https://img.shields.io/github/license/ultimaker/libarcus?style=flat" /></a>
+    <a href="https://github.com/Ultimaker/pyArcus/actions/workflows/conan-package.yml" alt="Conan Package">
+        <img src="https://github.com/Ultimaker/pyArcus/actions/workflows/conan-package.yml/badge.svg" /></a>
+    <a href="https://github.com/Ultimaker/pyArcus/issues" alt="Open Issues">
+        <img src="https://img.shields.io/github/issues/ultimaker/pyArcus" /></a>
+    <a href="https://github.com/Ultimaker/pyArcus/issues?q=is%3Aissue+is%3Aclosed" alt="Closed Issues">
+        <img src="https://img.shields.io/github/issues-closed/ultimaker/pyArcus?color=g" /></a>
+    <a href="https://github.com/Ultimaker/pyArcus/pulls" alt="Pull Requests">
+        <img src="https://img.shields.io/github/issues-pr/ultimaker/pyArcus" /></a>
+    <a href="https://github.com/Ultimaker/pyArcus/graphs/contributors" alt="Contributors">
+        <img src="https://img.shields.io/github/contributors/ultimaker/pyArcus" /></a>
+    <a href="https://github.com/Ultimaker/pyArcus" alt="Repo Size">
+        <img src="https://img.shields.io/github/repo-size/ultimaker/pyArcus?style=flat" /></a>
+    <a href="https://github.com/Ultimaker/pyArcus/blob/master/LICENSE" alt="License">
+        <img src="https://img.shields.io/github/license/ultimaker/pyArcus?style=flat" /></a>
 </p>
 
-This library contains C++ code and Python bindings for creating a socket in a thread and using this socket to send and receive messages
+This library contains Python bindings, for libArcus, for creating a socket in a thread and using this socket to send and receive messages
 based on the Protocol Buffers library. It is designed to facilitate the communication between Cura and its backend and similar code.
 
 ## License
 
-![License](https://img.shields.io/github/license/ultimaker/libarcus?style=flat)  
-Arcus is released under terms of the AGPLv3 License. Terms of the license can be found in the LICENSE file. Or at
-http://www.gnu.org/licenses/agpl.html
+![License](https://img.shields.io/github/license/ultimaker/pyArcus?style=flat)  
+pyArcus is released under terms of the LGPLv3 License. Terms of the license can be found in the LICENSE file. Or at
+http://www.gnu.org/licenses/lgpl.html
 
 > But in general it boils down to:  
-> **You need to share the source of any Arcus modifications if you make an application with Arcus.**
+> **You need to share the source of any pyArcus modifications if you make an application with pyArcus.**
 
 ## How to build
 
@@ -36,7 +36,7 @@ http://www.gnu.org/licenses/agpl.html
 > and pip to manage our dependencies, which are stored on our JFrog Artifactory server and in the pypi.org.
 > At the moment not everything is fully ported yet, so bare with us.
 
-If you want to develop Cura with Arcus see the Cura Wiki: [Running Cura from source](https://github.com/Ultimaker/Cura/wiki/Running-Cura-from-Source)
+If you want to develop Cura with pyArcus see the Cura Wiki: [Running Cura from source](https://github.com/Ultimaker/Cura/wiki/Running-Cura-from-Source)
 
 If you have never used [Conan](https://conan.io/) read their [documentation](https://docs.conan.io/en/latest/index.html)
 which is quite extensive and well maintained. Conan is a Python program and can be installed using pip
@@ -52,9 +52,9 @@ conan profile new default --detect
 conan remote remove cura
 ```
 
-### pyArcus python module (optional)
+### pyArcus python module
 
-This repository also contains a Python module named pyArcus. To build it [sip](https://pypi.org/project/sip/) 6.5.1
+This repository contains a Python module named pyArcus. To build it [sip](https://pypi.org/project/sip/) 6.5.1
 needs to be used to generate the C/C++ source code. We created a build tool for this called [sipbuildtool](https://github.com/Ultimaker/conan-ultimaker-index/recipes/sipbuildtool/conanfile.py)
 which is automatically installed when you run the `conan install` command. This will set up a temporary virtual Python environment, install
 sip and generated the C/C++ source code. The virtual Python environment is then removed. Downside of this method is that Conan should be
@@ -67,7 +67,7 @@ import pyArcus
 socket = pyArcus.Socket()
 ```
 
-### Building Arcus and pyArcus
+### Building pyArcus
 
 The steps above should be enough to get your system in such a state you can start development on Arcus. If you want
 to use your own system provided CMake and CMake generators, such as: Ninja, Make, NMake use the following steps to
@@ -93,12 +93,12 @@ cmake --toolchain=conan/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Debug ..
 cmake --build .
 ```
 
-## Creating a new Arcus Conan package
+## Creating a new pyArcus Conan package
 
-To create a new Arcus Conan package such that it can be used in Cura and CuraEngine, run the following command:
+To create a new pyArcus Conan package such that it can be used in Cura, run the following command:
 
 ```shell
-conan create . arcus/<version>@<username>/<channel> --build=missing --update
+conan create . pyarcus/<version>@<username>/<channel> --build=missing --update
 ```
 
 This package will be stored in the local Conan cache (`~/.conan/data` or `C:\Users\username\.conan\data` ) and can be used in downstream
@@ -113,12 +113,6 @@ conan install . -build=missing --update --require-override=arcus/<version>@<user
 
 ## Dependencies
 
-![Dependency graph](docs/assets/deps.png)
-
-### Runtime dependencies
-- [protobuf](docs/development/protobuf.md)
-- [zlib](docs/development/zlib.md)
-
 ### Build dependencies
 - [Python](https://www.python.org/)
 - [Cmake](https://cmake.org/)
@@ -132,91 +126,6 @@ conan install . -build=missing --update --require-override=arcus/<version>@<user
 
 If you're using [CLion](https://www.jetbrains.com/clion/) as an IDE be sure to checkout the Conan plugin
 [Conan CLion plugin](https://docs.conan.io/en/latest/integrations/ide/clion.html)
-
-## Using arcus with CMake
-
-<br>
-
-### [Conan CMake generators](https://docs.conan.io/en/latest/reference/conanfile/tools/cmake.html)
-
-<br>
-
-* [CMakeDeps](https://docs.conan.io/en/latest/reference/conanfile/tools/cmake/cmakedeps.html): generates information about where the **arcus** library and its dependencies  ( [protobuf](https://conan.io/center/protobuf),  [zlib](https://conan.io/center/zlib)) are installed together with other information like version, flags, and directory data or configuration. CMake will use this files when you invoke ``find_package()`` in your *CMakeLists.txt*.
-
-* [CMakeToolchain](https://docs.conan.io/en/latest/reference/conanfile/tools/cmake/cmaketoolchain.html): generates a CMake toolchain file the you can later invoke with CMake in the command line using `-DCMAKE_TOOLCHAIN_FILE=conantoolchain.cmake`.
-
-Declare these generators in your **conanfile.txt** along with your **arcus** dependency like:
-
-```ini
-[requires]
-arcus/latest6@ultimaker/stable
-
-[generators]
-CMakeDeps
-CMakeToolchain
-```
-
-<br>
-
-To use **arcus** in a simple CMake project with this structure:
-
-```shell
-.
-|-- CMakeLists.txt
-|-- conanfile.txt
-`-- src
-    `-- main..cpp
-```
-
-<br>
-
-Your **CMakeLists.txt** could look similar to this, using the global **arcus::arcus** CMake's target:
-
-```cmake
-cmake_minimum_required(VERSION 3.15)
-project(arcus_project CXX)
-
-find_package(arcus)
-
-add_executable(${PROJECT_NAME} src/main.cpp)
-
-# Use the global target
-target_link_libraries(${PROJECT_NAME} arcus::arcus)
-```
-
-<br>
-
-To install **arcus/latest@ultimaker/stable**, its dependencies and build your project, you just have to do:
-
-```shell
-# for Linux/macOS
-$ conan install . --install-folder cmake-build-release --build=missing
-$ cmake . -DCMAKE_TOOLCHAIN_FILE=cmake-build-release/conan_toolchain.cmake
-$ cmake --build .
-
-# for Windows and Visual Studio 2017
-$ conan install . --output-folder cmake-build --build=missing
-$ cmake . -G "Visual Studio 15 2017" -DCMAKE_TOOLCHAIN_FILE=cmake-build/conan_toolchain.cmake
-$ cmake --build . --config Release
-```
-
-
-
-<br>
-
-
-
-As the arcus Conan package defines components you can link only that desired part of the library in your project. For example, linking only with the arcus **libarcus** component, through the **arcus::libarcus** target.
-
-```cmake
-...
-# Link just to arcus libarcus component
-target_link_libraries(${PROJECT_NAME} arcus::libarcus)
-```
-
-<br>
-
-To check all the available components for **arcus** Conan package, please check the dedicated section at the end of this document.
 
 
 ## Using the Socket
@@ -253,4 +162,4 @@ of the gods.
 
 Java
 ====
-There is a Java port of libArcus, which can be found [here](https://github.com/Ocarthon/libArcus-Java).
+There is a Java port of pyArcus, which can be found [here](https://github.com/Ocarthon/pyArcus-Java).
