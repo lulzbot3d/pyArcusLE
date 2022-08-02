@@ -82,3 +82,6 @@ nbproject/*
 
 *.bak
 .vs/
+
+build/
+test_package/build/

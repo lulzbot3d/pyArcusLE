@@ -37,9 +37,9 @@ on:
 
     push:
         paths:
-            # FIXME: check the paths for this specific repo
             - 'python/**'
             - 'include/**'
+            - 'src/**'
             - 'test_package/**'
             - 'cmake/**'
             - 'conanfile.py'
@@ -49,10 +49,13 @@ on:
             - '.github/workflows/requirements*'
         branches:
             - main
+            - master
             - 'CURA-*'
-            - '[0-9]+.[0-9]+'
+            - '[0-9].[0-9]'
+            - '[0-9].[0-9][0-9]'
         tags:
-            - '[0-9]+.[0-9]+.[0-9]+'
+            - '[0-9].[0-9].[0-9]'
+            - '[0-9].[0-9][0-9].[0-9]'
 
 jobs:
     conan-recipe-version:
