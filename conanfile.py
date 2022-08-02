@@ -49,14 +49,15 @@ class ArcusConan(ConanFile):
     def configure(self):
         self.options["protobuf"].shared = True
         self.options["cpython"].shared = True
+        self.options["arcus"].shared = True
 
     def validate(self):
         if self.settings.compiler.get_safe("cppstd"):
             tools.check_min_cppstd(self, 17)
 
     def generate(self):
-        cmake = CMakeDeps(self)
-        cmake.generate()
+        deps = CMakeDeps(self)
+        deps.generate()
 
         tc = CMakeToolchain(self)
 
@@ -77,9 +78,9 @@ class ArcusConan(ConanFile):
         tc.variables["Python_FIND_STRATEGY"] = "LOCATION"
 
         if self.options.shared and self.settings.os == "Windows":
-            tc.variables["Python_SITELIB_LOCAL"] = self.cpp.build.bindirs[0].replace("\\", "/")
+            tc.variables["Python_SITELIB_LOCAL"] = self.cpp.build.bindirs[0]
         else:
-            tc.variables["Python_SITELIB_LOCAL"] = self.cpp.build.libdirs[0].replace("\\", "/")
+            tc.variables["Python_SITELIB_LOCAL"] = self.cpp.build.libdirs[0]
 
         tc.generate()
 
@@ -91,7 +92,7 @@ class ArcusConan(ConanFile):
         self.cpp.package.libdirs = ["site-packages"]
 
         if self.settings.os in ["Linux", "FreeBSD", "Macos"]:
-            self.cpp.package.components["pyarcus"].system_libs = ["pthread"]
+            self.cpp.package.system_libs = ["pthread"]
 
     def build(self):
         cmake = CMake(self)

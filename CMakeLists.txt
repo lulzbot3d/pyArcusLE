@@ -2,8 +2,6 @@ cmake_policy(SET CMP0091 NEW)
 project(pyarcus)
 cmake_minimum_required(VERSION 3.20)
 include(cmake/StandardProjectSettings.cmake)
-
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 include(cmake/SIPMacros.cmake)
 
 find_package(protobuf 3.17.1 REQUIRED)

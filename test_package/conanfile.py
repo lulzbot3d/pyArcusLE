@@ -23,7 +23,7 @@ class ArcusTestConan(ConanFile):
             shutil.copy(Path(self.source_folder).joinpath("test.proto"), Path(self.build_folder).joinpath("test.proto"))
 
     def imports(self):
-        if self.settings.os == "Windows" and not tools.cross_building(self, skip_x64_x86 = True):
+        if self.settings.os == "Windows" and not tools.cross_building(self):
             self.copy("*.dll", dst=".", src="@bindirs")
             self.copy("*.pyd", dst=".", src="@libdirs")
 
