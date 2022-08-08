@@ -1,12 +1,12 @@
 "None":
     requirements:
-        - "protobuf/3.17.1"
+        - "protobuf/3.21.4"
         - "arcus/(latest)@ultimaker/testing"
         - "cpython/3.10.4"
         - "zlib/1.2.12"
 "5.2.0":
     requirements:
-        - "protobuf/3.17.1"
+        - "protobuf/3.21.4"
         - "libarcus/5.2.0@ultimaker/testing"
         - "cpython/3.10.4"
         - "zlib/1.2.12"
