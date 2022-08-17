@@ -29,7 +29,34 @@ http://www.gnu.org/licenses/lgpl.html
 > But in general it boils down to:  
 > **You need to share the source of any pyArcus modifications if you make an application with pyArcus.**
 
-## How to build
+## System Requirements
+
+### Windows
+- Python 3.6 or higher
+- Ninja 1.10 or higher
+- VS2022 or higher
+- CMake 3.23 or higher
+- nmake
+- sip 6.5.0 or higher
+
+### MacOs
+- Python 3.6 or higher
+- Ninja 1.10 or higher
+- apply clang 11 or higher
+- CMake 3.23 or higher
+- make
+- sip 6.5.0 or higher
+
+### Linux
+- Python 3.6 or higher
+- Ninja 1.10 or higher
+- gcc 12 or higher
+- CMake 3.23 or higher
+- make
+- sip 6.5.0 or higher
+
+
+## How To Build
 
 > **Note:**  
 > We are currently in the process of switch our builds and pipelines to an approach which uses [Conan](https://conan.io/)
@@ -41,18 +68,82 @@ If you want to develop Cura with pyArcus see the Cura Wiki: [Running Cura from s
 If you have never used [Conan](https://conan.io/) read their [documentation](https://docs.conan.io/en/latest/index.html)
 which is quite extensive and well maintained. Conan is a Python program and can be installed using pip
 
+### 1. Configure Conan
+
 ```bash
 pip install conan --upgrade
 conan config install https://github.com/ultimaker/conan-config.git
-conan profile new default --detect
+conan profile new default --detect --force
 ```
 
-**Community developers would have to remove the Conan `cura` repository because that one requires credentials.**
+Community developers would have to remove the Conan cura repository because it requires credentials. 
+
+Ultimaker developers need to request an account for our JFrog Artifactory server at IT
 ```bash
 conan remote remove cura
 ```
 
-### pyArcus python module
+### 2. Clone pyArcus
+```bash
+git clone https://github.com/Ultimaker/pyArcus.git
+cd pyArcus
+```
+
+### 3. Install & Build pyArcus (Release OR Debug)
+
+#### Release
+```bash
+conan install . --build=missing --update
+# optional for a specific version: conan install . pyarcus/<version>@<user>/<channel> --build=missing --update
+cmake --preset release
+cmake --build --preset release
+```
+
+#### Debug
+
+```bash
+conan install . --build=missing --update build_type=Debug
+cmake --preset debug
+cmake --build --preset debug
+```
+
+## Creating a new pyArcus Conan package
+
+To create a new pyArcus Conan package such that it can be used in Cura and Uranium, run the following command:
+
+```shell
+conan create . pyarcus/<version>@<username>/<channel> --build=missing --update
+```
+
+This package will be stored in the local Conan cache (`~/.conan/data` or `C:\Users\username\.conan\data` ) and can be used in downstream
+projects, such as Cura and Uranium by adding it as a requirement in the `conanfile.py` or in `conandata.yml`.
+
+Note: Make sure that the used `<version>` is present in the conandata.yml in the pyArcus root
+
+You can also specify the override at the commandline, to use the newly created package, when you execute the `conan install`
+command in the root of the consuming project, with:
+
+
+```shell
+conan install . -build=missing --update --require-override=pyarcus/<version>@<username>/<channel>
+```
+
+## Developing pyArcus In Editable Mode
+
+You can use your local development repository downsteam by adding it as an editable mode package.
+This means you can test this in a consuming project without creating a new package for this project every time.
+
+```bash
+    conan editable add . pyArcus/<version>@<username>/<channel>
+```
+
+Then in your downsteam projects (Cura) root directory override the package with your editable mode package.  
+
+```shell
+conan install . -build=missing --update --require-override=pyarcus/<version>@<username>/<channel>
+```
+
+## pyArcus python module
 
 This repository contains a Python module named pyArcus. To build it [sip](https://pypi.org/project/sip/) 6.5.1
 needs to be used to generate the C/C++ source code. We created a build tool for this called [sipbuildtool](https://github.com/Ultimaker/conan-ultimaker-index/recipes/sipbuildtool/conanfile.py)
@@ -66,67 +157,6 @@ installed with the system Python, not the virtual Python environment.
 import pyArcus
 socket = pyArcus.Socket()
 ```
-
-### Building pyArcus
-
-The steps above should be enough to get your system in such a state you can start development on Arcus. If you want
-to use your own system provided CMake and CMake generators, such as: Ninja, Make, NMake use the following steps to
-install the dependencies for Arcus. Executed in the root directory of Arcus.
-
-#### Release build type
-
-```shell
-conan install . --build=missing --update
-cd cmake-build-release
-cmake --toolchain=conan/conan_toolchain.cmake ..
-cmake --build .
-```
-
-#### Debug build type
-
-Use the same instructions as above, but pass the `-s build_type=Debug` flag to the `conan install` command.
-
-```shell
-conan install . --build=missing --update -s build_type=Debug
-cd cmake-build-debug
-cmake --toolchain=conan/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Debug ..
-cmake --build .
-```
-
-## Creating a new pyArcus Conan package
-
-To create a new pyArcus Conan package such that it can be used in Cura, run the following command:
-
-```shell
-conan create . pyarcus/<version>@<username>/<channel> --build=missing --update
-```
-
-This package will be stored in the local Conan cache (`~/.conan/data` or `C:\Users\username\.conan\data` ) and can be used in downstream
-projects, such as Cura and CuraEngine by adding it as a requirement in the `conanfile.py` or in `conandata.yml` if that project is set up
-in such a way. You can also specify the override at the commandline, to use the newly created package, when you execute the `conan install`
-command in the root of the consuming project, with:
-
-
-```shell
-conan install . -build=missing --update --require-override=arcus/<version>@<username>/<channel>
-```
-
-## Dependencies
-
-### Build dependencies
-- [Python](https://www.python.org/)
-- [Cmake](https://cmake.org/)
-- [Ninja (optional)](https://ninja-build.org/)
-- [GNU-GCC](https://gcc.gnu.org/)
-- [Visual Studio](https://visualstudio.microsoft.com/vs/)
-- [xcode command line tools](https://developer.apple.com/xcode/)
-- [sip](https://pypi.org/project/sip/)
-
-### IDE
-
-If you're using [CLion](https://www.jetbrains.com/clion/) as an IDE be sure to checkout the Conan plugin
-[Conan CLion plugin](https://docs.conan.io/en/latest/integrations/ide/clion.html)
-
 
 ## Using the Socket
 
@@ -153,13 +183,11 @@ can be created through the `addRepeatedMessage()` method. `repeatedMessageCount(
 return the number of repeated messages on an object and `getRepeatedMessage()` will get
 a certain instance of a repeated message. See python/PythonMessage.h for more details.
 
-Origin of the Name
-==================
+## Origin of the Name
 
 The name Arcus is from the Roman god Arcus. This god is the roman equivalent of
 the goddess Iris, who is the personification of the rainbow and the messenger
 of the gods.
 
-Java
-====
+## Java
 There is a Java port of pyArcus, which can be found [here](https://github.com/Ocarthon/pyArcus-Java).
