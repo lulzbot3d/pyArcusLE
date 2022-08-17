@@ -10,7 +10,7 @@ import pyArcus
 from threading import Thread
 import time
 
-sleep_msec = 250
+sleep_msec = 200
 port = 44444
 ip = r"127.0.0.1"
 proto_filename = "test.proto"
@@ -96,7 +96,7 @@ print("Connected", file=sys.stderr)
 
 # Send a number of messages.
 total = 100.0
-inc = 12.5
+inc = 10
 should_receive = int(total/inc)
 for progress in range(0, should_receive):
     message = socket.createMessage("test.proto.Progress")
