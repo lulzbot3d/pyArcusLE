@@ -4,7 +4,7 @@ from pathlib import Path
 
 from conan.tools import files
 from conan import ConanFile
-from conan.tools.layout import basic_layout
+from conan.tools.layout import cmake_layout
 from conans import tools
 
 required_conan_version = ">=1.48.0"
@@ -21,7 +21,7 @@ class ArcusConan(ConanFile):
     revision_mode = "scm"
     exports = "LICENSE*"
 
-    python_requires = "umbase/0.1.5@ultimaker/testing", "pyprojecttoolchain/0.1.1@ultimaker/testing", "sipbuildtool/0.2.0@ultimaker/testing"
+    python_requires = "umbase/0.1.5@ultimaker/testing", "pyprojecttoolchain/0.1.3@ultimaker/testing", "sipbuildtool/0.2.0@ultimaker/testing"
     python_requires_extend = "umbase.UMBaseConanfile"
 
     options = {
@@ -63,13 +63,14 @@ class ArcusConan(ConanFile):
     def generate(self):
         pp = self.python_requires["pyprojecttoolchain"].module.PyProjectToolchain(self)
         pp.blocks["tool_sip_project"].values["sip_files_dir"] = Path("python").as_posix()
+        pp.blocks["tool_sip_bindings"].values["name"] = "pyArcus"
+        pp.blocks["tool_sip_metadata"].values["name"] = "pyArcus"
         pp.blocks["extra_sources"].values["headers"] = ["PythonMessage.h"]
         pp.blocks["extra_sources"].values["sources"] = [Path("src", "PythonMessage.cpp").as_posix()]
         pp.generate()
 
     def layout(self):
-        basic_layout(self)
-        self.cpp.source.includedirs = ["include"]
+        cmake_layout(self)
 
         if self.settings.os in ["Linux", "FreeBSD", "Macos"]:
             self.cpp.package.system_libs = ["pthread"]
