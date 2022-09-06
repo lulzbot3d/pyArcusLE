@@ -6,7 +6,7 @@ find_package(protobuf REQUIRED)
 find_package(cpython REQUIRED)
 find_package(arcus REQUIRED)
 
-find_package(umbase REQUIRED)
+find_package(standardprojectsettings REQUIRED)
 find_package(sipbuildtool REQUIRED)
 
 add_library(pyArcus INTERFACE src/PythonMessage.cpp)
