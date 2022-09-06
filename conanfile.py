@@ -84,10 +84,6 @@ class ArcusConan(ConanFile):
         tc.variables["Python_FIND_IMPLEMENTATIONS"] = "CPython"
         tc.variables["Python_FIND_STRATEGY"] = "LOCATION"
         tc.variables["Python_SITEARCH"] = "site-packages"
-
-        if self.settings.compiler == "Visual Studio":
-            tc.blocks["generic_system"].values["generator_platform"] = None
-            tc.blocks["generic_system"].values["toolset"] = None
         tc.generate()
 
         # Generate the Source code from SIP
