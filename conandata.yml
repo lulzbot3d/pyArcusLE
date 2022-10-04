@@ -4,6 +4,12 @@
         - "arcus/(latest)@ultimaker/testing"
         - "cpython/3.10.4"
         - "zlib/1.2.12"
+"5.2.0-beta.2":
+    requirements:
+        - "protobuf/3.21.4"
+        - "arcus/(latest)@ultimaker/stable"
+        - "cpython/3.10.4"
+        - "zlib/1.2.12"
 "5.2.0-beta.1":
     requirements:
         - "protobuf/3.21.4"
