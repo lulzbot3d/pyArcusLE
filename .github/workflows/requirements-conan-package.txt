@@ -1,2 +1,2 @@
-conan
+conan==1.53.0
 sip
