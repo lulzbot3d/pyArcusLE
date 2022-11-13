@@ -1,2 +1,2 @@
-conan==1.53.0
-sip==6.6.2
+conan
+sip
