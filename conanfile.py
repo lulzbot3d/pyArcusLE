@@ -8,7 +8,7 @@ from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import AutoPackager
 
 
-required_conan_version = ">=1.48.0"
+required_conan_version = ">=1.52.0"
 
 
 class ArcusConan(ConanFile):
@@ -23,7 +23,7 @@ class ArcusConan(ConanFile):
     exports = "LICENSE*"
     generators = "CMakeDeps", "VirtualBuildEnv", "VirtualRunEnv"
 
-    python_requires = "umbase/[>=0.1.7]@ultimaker/stable", "pyprojecttoolchain/[>=0.1.5]@ultimaker/stable", "sipbuildtool/[>=0.2.2]@ultimaker/stable"
+    python_requires = "umbase/[>=0.1.7]@ultimaker/stable", "pyprojecttoolchain/[>=0.1.6]@ultimaker/stable", "sipbuildtool/[>=0.2.3]@ultimaker/stable"
     python_requires_extend = "umbase.UMBaseConanfile"
 
     options = {
@@ -48,10 +48,9 @@ class ArcusConan(ConanFile):
     def set_version(self):
         if self.version is None:
             self.version = self._umdefault_version()
-
     def requirements(self):
         self.requires("standardprojectsettings/[>=0.1.0]@ultimaker/stable")  # required for the CMake build modules
-        self.requires("sipbuildtool/0.2.2@ultimaker/stable")  # required for the CMake build modules
+        self.requires("sipbuildtool/0.2.3@ultimaker/stable")  # required for the CMake build modules
         for req in self._um_data()["requirements"]:
             self.requires(req)
 
