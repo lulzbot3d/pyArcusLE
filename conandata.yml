@@ -1,7 +1,7 @@
 "5.3.0-alpha":
     requirements:
         - "protobuf/3.21.4"
-        - "arcus/(latest)@ultimaker/testing"
+        - "arcus/5.2.2"
         - "cpython/3.10.4"
         - "zlib/1.2.12"
 "5.2.2":
