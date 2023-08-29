@@ -10,7 +10,7 @@ from conan.tools.files import copy, AutoPackager
 from conan.tools.microsoft import check_min_vs, is_msvc, is_msvc_static_runtime
 from conan.tools.scm import Version
 
-required_conan_version = ">=1.55.0"
+required_conan_version = ">=1.56.0"
 
 
 class ArcusConan(ConanFile):
@@ -25,7 +25,7 @@ class ArcusConan(ConanFile):
     exports = "LICENSE*"
     generators = "CMakeDeps", "VirtualBuildEnv", "VirtualRunEnv"
 
-    python_requires = "pyprojecttoolchain/[>=0.1.6]@ultimaker/stable", "sipbuildtool/[>=0.2.4]@ultimaker/stable"
+    python_requires = "pyprojecttoolchain/[>=0.1.7]@ultimaker/stable", "sipbuildtool/[>=0.2.4]@ultimaker/stable"
 
     options = {
         "shared": [True, False],
