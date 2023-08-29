@@ -40,6 +40,10 @@ class ArcusConan(ConanFile):
         "py_build_backend": "sipbuild.api",
     }
 
+    def set_version(self):
+        if not self.version:
+            self.version = "5.3.0-alpha"
+
     def _min_cppstd(self):
         return 17
 
@@ -96,11 +100,11 @@ class ArcusConan(ConanFile):
     def generate(self):
         # Generate the pyproject.toml
         pp = self.python_requires["pyprojecttoolchain"].module.PyProjectToolchain(self)
-        pp.blocks["tool_sip_project"].values["sip_files_dir"] = Path("python").as_posix()
+        pp.blocks["tool_sip_project"].values["sip_files_dir"] = str(Path("python").as_posix())
         pp.blocks["tool_sip_bindings"].values["name"] = "pyArcus"
         pp.blocks["tool_sip_metadata"].values["name"] = "pyArcus"
         pp.blocks["extra_sources"].values["headers"] = ["PythonMessage.h"]
-        pp.blocks["extra_sources"].values["sources"] = [Path("src", "PythonMessage.cpp").as_posix()]
+        pp.blocks["extra_sources"].values["sources"] = [str(Path("src", "PythonMessage.cpp").as_posix())]
         pp.generate()
 
         tc = CMakeToolchain(self)
@@ -138,12 +142,12 @@ class ArcusConan(ConanFile):
 
     def package(self):
         copy(self, pattern="LICENSE*", dst="licenses", src=self.source_folder)
-        for ext in (".pyi", ".so", ".lib", ".a", ".pyd"):
-            copy(self, f"pyArcus{ext}", self.build_folder, self.package_path.joinpath("lib"), keep_path = False)
+        for ext in ("*.pyi", "*.so", "*.lib", "*.a", "*.pyd"):
+            copy(self, ext, src = self.build_folder, dst = path.join(self.package_folder, "lib"), keep_path = False)
 
-        for ext in (".dll", ".so", ".dylib"):
-            copy(self, f"pyArcus{ext}", self.build_folder, self.package_path.joinpath("bin"), keep_path = False)
-        copy(self, "*.h", self.source_path.joinpath("include"), self.package_path.joinpath("include"))
+        for ext in ("*.dll", "*.so", "*.dylib"):
+            copy(self, ext, src = self.build_folder, dst = path.join(self.package_folder, "bin"), keep_path = False)
+        copy(self, "*.h", path.join(self.source_folder, "include"), path.join(self.package_folder, "include"))
 
     def package_info(self):
         self.cpp_info.libdirs = [ path.join(self.package_folder, "lib")]
