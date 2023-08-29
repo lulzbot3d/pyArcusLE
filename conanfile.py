@@ -93,10 +93,6 @@ class ArcusConan(ConanFile):
             self.options.rm_safe("fPIC")
         self.options["cpython"].shared = True
 
-    def validate(self):
-        if self.settings.compiler.get_safe("cppstd"):
-            check_min_cppstd(self, 17)
-
     def generate(self):
         # Generate the pyproject.toml
         pp = self.python_requires["pyprojecttoolchain"].module.PyProjectToolchain(self)
