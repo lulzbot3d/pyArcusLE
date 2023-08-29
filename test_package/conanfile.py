@@ -26,7 +26,8 @@ class ArcusTestConan(ConanFile):
         copy(self, "*.pyd", src = cpp_info.libdirs[0], dst =self.build_folder)
 
         for dep in self.dependencies.values():
-            copy(self, "*.dll", src = dep.cpp_info.bindirs[0], dst = self.build_folder)
+            for bin_dir in dep.cpp_info.bindirs:
+                copy(self, "*.dll", src = bin_dir, dst = self.build_folder)
 
     def build(self):
         if can_run(self):
