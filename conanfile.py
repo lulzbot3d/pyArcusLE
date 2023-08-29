@@ -66,7 +66,7 @@ class ArcusConan(ConanFile):
 
     def requirements(self):
         self.requires("protobuf/3.21.9", transitive_headers=True)
-        self.requires("arcus/(latest)@ultimaker/cura_10475")  # TODO: point to `testing` once the CURA-10475 from libArcus is main
+        self.requires("arcus/(latest)@ultimaker/cura_10475")
         self.requires("cpython/3.10.4")  # Maybe place this in build_requirements as well
         self.requires("zlib/1.2.12")
 
