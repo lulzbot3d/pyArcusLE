@@ -7,20 +7,32 @@ from conan import ConanFile
 from conan.tools.build import can_run
 from conan.tools.env import VirtualRunEnv
 from conan.errors import ConanException
+from conan.tools.files import copy
 
 
 class ArcusTestConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
-    generators = "VirtualRunEnv"
+    generators =  "VirtualRunEnv"
+    test_type = "explicit"
+
+    def requirements(self):
+        self.requires(self.tested_reference_str)
 
     def generate(self):
         venv = VirtualRunEnv(self)
         venv.generate()
 
+        cpp_info = self.dependencies[self.tested_reference_str].cpp_info
+        copy(self, "*.pyd", src = cpp_info.libdirs[0], dst =self.build_folder)
+
+        for dep in self.dependencies.values():
+            copy(self, "*.dll", src = dep.cpp_info.bindirs[0], dst = self.build_folder)
+
     def build(self):
         if can_run(self):
             shutil.copy(Path(self.source_folder).joinpath("test.py"), Path(self.build_folder).joinpath("test.py"))
             shutil.copy(Path(self.source_folder).joinpath("test.proto"), Path(self.build_folder).joinpath("test.proto"))
+
 
     def test(self):
         if can_run(self):
