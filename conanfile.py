@@ -4,13 +4,13 @@ from os import path
 from conan import ConanFile
 from conan.errors import ConanInvalidConfiguration
 from conan.tools.build import check_min_cppstd
-from conan.tools.cmake import CMakeToolchain, CMakeDeps, CMake, cmake_layout
+from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
 from conan.tools.env import VirtualBuildEnv
-from conan.tools.files import copy, AutoPackager
+from conan.tools.files import copy
 from conan.tools.microsoft import check_min_vs, is_msvc, is_msvc_static_runtime
 from conan.tools.scm import Version
 
-required_conan_version = ">=1.56.0"
+required_conan_version = ">=1.58.0"
 
 
 class ArcusConan(ConanFile):
@@ -42,9 +42,8 @@ class ArcusConan(ConanFile):
 
     def set_version(self):
         if not self.version:
-            self.version = "5.3.0-alpha"
+            self.version = "5.4.0-alpha"
 
-    @property
     def _min_cppstd(self):
         return 17
 
@@ -66,7 +65,7 @@ class ArcusConan(ConanFile):
 
     def requirements(self):
         self.requires("protobuf/3.21.9", transitive_headers=True)
-        self.requires("arcus/(latest)@ultimaker/cura_10475")
+        self.requires("arcus/5.3.0")
         self.requires("cpython/3.10.4")  # Maybe place this in build_requirements as well
         self.requires("zlib/1.2.12")
 
@@ -147,7 +146,7 @@ class ArcusConan(ConanFile):
         copy(self, "*.h", path.join(self.source_folder, "include"), path.join(self.package_folder, "include"))
 
     def package_info(self):
-        self.cpp_info.libdirs = [ path.join(self.package_folder, "lib")]
+        self.cpp_info.libdirs = [ path.join(self.package_folder, "lib") ]
         if self.in_local_cache:
             self.runenv_info.append_path("PYTHONPATH", path.join(self.package_folder, "lib"))
         else:
