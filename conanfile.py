@@ -17,7 +17,7 @@ class ArcusConan(ConanFile):
     name = "pyarcus"
     license = "LGPL-3.0"
     author = "Ultimaker B.V."
-    url = "https://github.com/Ultimaker/libArcus"
+    url = "https://github.com/Ultimaker/pyArcus"
     description = "Communication library between internal components for Ultimaker software"
     topics = ("conan", "python", "binding", "sip", "cura", "protobuf")
     settings = "os", "compiler", "build_type", "arch"
