@@ -44,6 +44,7 @@ class ArcusConan(ConanFile):
         if not self.version:
             self.version = "5.4.0-alpha"
 
+    @property
     def _min_cppstd(self):
         return 17
 
