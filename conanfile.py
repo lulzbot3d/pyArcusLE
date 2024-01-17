@@ -6,9 +6,9 @@ from conan.errors import ConanInvalidConfiguration
 from conan.tools.build import check_min_cppstd
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
 from conan.tools.env import VirtualBuildEnv
-from conan.tools.files import copy
+from conan.tools.files import copy, update_conandata
 from conan.tools.microsoft import check_min_vs, is_msvc, is_msvc_static_runtime
-from conan.tools.scm import Version
+from conan.tools.scm import Version, Git
 
 required_conan_version = ">=1.58.0"
 
@@ -42,7 +42,12 @@ class ArcusConan(ConanFile):
 
     def set_version(self):
         if not self.version:
-            self.version = "5.4.0-alpha"
+            build_meta = "" if self.develop else "+source"
+            self.version = self.conan_data["version"] + build_meta
+
+    def export(self):
+        git = Git(self)
+        update_conandata(self, {"version": self.version, "commit": git.get_commit()})
 
     @property
     def _min_cppstd(self):
@@ -65,8 +70,9 @@ class ArcusConan(ConanFile):
         copy(self, "*", path.join(self.recipe_folder, "python"), path.join(self.export_sources_folder, "python"))
 
     def requirements(self):
+        for req in self.conan_data["requirements"]:
+            self.requires(req)
         self.requires("protobuf/3.21.9", transitive_headers=True)
-        self.requires("arcus/5.3.1")
         self.requires("cpython/3.10.4")  # Maybe place this in build_requirements as well
         self.requires("zlib/1.2.12")
 
