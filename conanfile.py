@@ -66,7 +66,7 @@ class ArcusConan(ConanFile):
 
     def requirements(self):
         self.requires("protobuf/3.21.9", transitive_headers=True)
-        self.requires("arcus/5.3.0")
+        self.requires("arcus/5.3.1")
         self.requires("cpython/3.10.4")  # Maybe place this in build_requirements as well
         self.requires("zlib/1.2.12")
 
