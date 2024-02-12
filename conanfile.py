@@ -1,5 +1,5 @@
+import os
 from pathlib import Path
-from os import path
 
 from conan import ConanFile
 from conan.errors import ConanInvalidConfiguration
@@ -21,11 +21,11 @@ class ArcusConan(ConanFile):
     description = "Communication library between internal components for Ultimaker software"
     topics = ("conan", "python", "binding", "sip", "cura", "protobuf")
     settings = "os", "compiler", "build_type", "arch"
-    revision_mode = "scm"
     exports = "LICENSE*"
-    generators = "CMakeDeps", "VirtualBuildEnv", "VirtualRunEnv"
+    generators = "CMakeDeps", "VirtualRunEnv"
+    package_type = "library"
 
-    python_requires = "pyprojecttoolchain/[>=0.1.7]@ultimaker/stable", "sipbuildtool/[>=0.2.4]@ultimaker/stable"
+    python_requires = "pyprojecttoolchain/[>=0.2.0]@ultimaker/cura_11622", "sipbuildtool/[>=0.3.0]@ultimaker/cura_11622"  # FIXME: use stable after merge
 
     options = {
         "shared": [True, False],
@@ -42,8 +42,7 @@ class ArcusConan(ConanFile):
 
     def set_version(self):
         if not self.version:
-            build_meta = "" if self.develop else "+source"
-            self.version = self.conan_data["version"] + build_meta
+            self.version = self.conan_data["version"]
 
     def export(self):
         git = Git(self)
@@ -65,16 +64,16 @@ class ArcusConan(ConanFile):
 
     def export_sources(self):
         copy(self, "CMakeLists.txt", self.recipe_folder, self.export_sources_folder)
-        copy(self, "*", path.join(self.recipe_folder, "src"), path.join(self.export_sources_folder, "src"))
-        copy(self, "*", path.join(self.recipe_folder, "include"), path.join(self.export_sources_folder, "include"))
-        copy(self, "*", path.join(self.recipe_folder, "python"), path.join(self.export_sources_folder, "python"))
+        copy(self, "*", os.path.join(self.recipe_folder, "src"), os.path.join(self.export_sources_folder, "src"))
+        copy(self, "*", os.path.join(self.recipe_folder, "include"),
+             os.path.join(self.export_sources_folder, "include"))
+        copy(self, "*", os.path.join(self.recipe_folder, "python"), os.path.join(self.export_sources_folder, "python"))
 
     def requirements(self):
         for req in self.conan_data["requirements"]:
             self.requires(req)
-        self.requires("protobuf/3.21.9", transitive_headers=True)
-        self.requires("cpython/3.10.4")  # Maybe place this in build_requirements as well
-        self.requires("zlib/1.2.12")
+        self.requires("protobuf/3.21.12", transitive_headers=True)
+        self.requires("zlib/1.3.1")
 
     def validate(self):
         if self.settings.compiler.cppstd:
@@ -88,8 +87,9 @@ class ArcusConan(ConanFile):
                 )
 
     def build_requirements(self):
-        self.test_requires("standardprojectsettings/[>=0.1.0]@ultimaker/stable")
-        self.test_requires("sipbuildtool/[>=0.2.4]@ultimaker/stable")
+        self.test_requires("standardprojectsettings/[>=0.2.0]@ultimaker/cura_11622")  # FIXME: use stable after merge
+        self.test_requires("sipbuildtool/[>=0.3.0]@ultimaker/cura_11622")  # FIXME: use stable after merge
+        self.test_requires("cpython/3.12.2@ultimaker/cura_11622")  # FIXME: use stable after merge
 
     def config_options(self):
         if self.settings.os == "Windows":
@@ -113,10 +113,12 @@ class ArcusConan(ConanFile):
         tc = CMakeToolchain(self)
         if is_msvc(self):
             tc.variables["USE_MSVC_RUNTIME_LIBRARY_DLL"] = not is_msvc_static_runtime(self)
-        tc.cache_variables["CMAKE_POLICY_DEFAULT_CMP0077"] = "NEW"
-        tc.variables["Python_EXECUTABLE"] = self.deps_user_info["cpython"].python.replace("\\", "/")
-        tc.variables["Python_USE_STATIC_LIBS"] = not self.options["cpython"].shared
-        tc.variables["Python_ROOT_DIR"] = self.deps_cpp_info["cpython"].rootpath.replace("\\", "/")
+        tc.cache_variables["CMAKE_POLICY_DEFAULT_CMP0148"] = "OLD"
+        cpython_conf = self.dependencies["cpython"].conf_info
+        tc.variables["Python_EXECUTABLE"] = cpython_conf.get("user.cpython:python").replace("\\", "/")
+        tc.variables["Python_ROOT_DIR"] = cpython_conf.get("user.cpython:python_root").replace("\\", "/")
+        cpython_options = self.dependencies["cpython"].options
+        tc.variables["Python_USE_STATIC_LIBS"] = not cpython_options.shared
         tc.variables["Python_FIND_FRAMEWORK"] = "NEVER"
         tc.variables["Python_FIND_REGISTRY"] = "NEVER"
         tc.variables["Python_FIND_IMPLEMENTATIONS"] = "CPython"
@@ -138,6 +140,12 @@ class ArcusConan(ConanFile):
         if self.settings.os in ["Linux", "FreeBSD", "Macos"]:
             self.cpp.package.system_libs = ["pthread"]
 
+        self.cpp.package.lib = ["pyArcus"]
+
+        self.cpp.package.libdirs = ["lib"]
+        self.layouts.build.runenv_info.prepend_path("PYTHONPATH", ".")
+        self.layouts.package.runenv_info.prepend_path("PYTHONPATH", "lib")
+
     def build(self):
         cmake = CMake(self)
         cmake.configure()
@@ -145,16 +153,12 @@ class ArcusConan(ConanFile):
 
     def package(self):
         copy(self, pattern="LICENSE*", dst="licenses", src=self.source_folder)
-        for ext in ("*.pyi", "*.so", "*.lib", "*.a", "*.pyd"):
-            copy(self, ext, src = self.build_folder, dst = path.join(self.package_folder, "lib"), keep_path = False)
 
-        for ext in ("*.dll", "*.so", "*.dylib"):
-            copy(self, ext, src = self.build_folder, dst = path.join(self.package_folder, "bin"), keep_path = False)
-        copy(self, "*.h", path.join(self.source_folder, "include"), path.join(self.package_folder, "include"))
+        for ext in ("*.pyi", "*.so", "*.lib", "*.a", "*.pyd", "*.dylib", "*.dll"):
+            copy(self, ext, src=self.build_folder,
+                 dst=os.path.join(self.package_folder, "lib"), keep_path=False)
+
+        copy(self, "*.h", os.path.join(self.source_folder, "include"), os.path.join(self.package_folder, "include"))
 
     def package_info(self):
-        self.cpp_info.libdirs = [ path.join(self.package_folder, "lib") ]
-        if self.in_local_cache:
-            self.runenv_info.append_path("PYTHONPATH", path.join(self.package_folder, "lib"))
-        else:
-            self.runenv_info.append_path("PYTHONPATH", self.build_folder)
+        self.conf_info.define("user.pyarcus:pythonpath", os.path.join(self.package_folder, self.cpp.package.libdirs[0]))
