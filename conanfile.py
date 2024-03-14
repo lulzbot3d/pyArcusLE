@@ -23,8 +23,8 @@ class ArcusConan(ConanFile):
     exports = "LICENSE*"
     generators = "CMakeDeps", "VirtualBuildEnv", "VirtualRunEnv"
 
-    python_requires = "umbase/[>=0.1.7]@ultimaker/stable", "pyprojecttoolchain/[>=0.1.6]@ultimaker/stable", "sipbuildtool/[>=0.2.3]@ultimaker/stable"
-    python_requires_extend = "umbase.UMBaseConanfile"
+    python_requires = "lulzbase/[>=0.1.7]@lulzbot/stable", "pyprojecttoolchain/[>=0.1.6]@lulzbot/stable", "sipbuildtool/[>=0.2.3]@lulzbot/stable"
+    python_requires_extend = "lulzbase.LulzBaseConanfile"
 
     options = {
         "shared": [True, False],
@@ -49,8 +49,8 @@ class ArcusConan(ConanFile):
         if self.version is None:
             self.version = self._umdefault_version()
     def requirements(self):
-        self.requires("standardprojectsettings/[>=0.1.0]@ultimaker/stable")  # required for the CMake build modules
-        self.requires("sipbuildtool/0.2.3@ultimaker/stable")  # required for the CMake build modules
+        self.requires("standardprojectsettings/[>=0.1.0]@lulzbot/stable")  # required for the CMake build modules
+        self.requires("sipbuildtool/0.2.3@lulzbot/stable")  # required for the CMake build modules
         for req in self._um_data()["requirements"]:
             self.requires(req)
 
