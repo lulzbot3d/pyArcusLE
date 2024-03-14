@@ -25,7 +25,7 @@ class ArcusConan(ConanFile):
     exports = "LICENSE*"
     generators = "CMakeDeps", "VirtualBuildEnv", "VirtualRunEnv"
 
-    python_requires = "pyprojecttoolchain/[>=0.1.7]@ultimaker/stable", "sipbuildtool/[>=0.2.4]@ultimaker/stable"
+    python_requires = "pyprojecttoolchain/[>=0.1.7]@lulzbot/stable", "sipbuildtool/[>=0.2.4]@lulzbot/stable"
 
     options = {
         "shared": [True, False],
