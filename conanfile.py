@@ -25,7 +25,7 @@ class ArcusConan(ConanFile):
     exports = "LICENSE*"
     generators = "CMakeDeps", "VirtualBuildEnv", "VirtualRunEnv"
 
-    python_requires = "pyprojecttoolchain/[>=0.1.7]@ultimaker/stable", "sipbuildtool/[>=0.2.4]@ultimaker/stable"
+    python_requires = "pyprojecttoolchain/[>=0.1.7]@lulzbot/stable", "sipbuildtool/[>=0.2.4]@lulzbot/stable"
 
     options = {
         "shared": [True, False],
@@ -82,8 +82,8 @@ class ArcusConan(ConanFile):
                 )
 
     def build_requirements(self):
-        self.test_requires("standardprojectsettings/[>=0.1.0]@ultimaker/stable")
-        self.test_requires("sipbuildtool/[>=0.2.4]@ultimaker/stable")
+        self.test_requires("standardprojectsettings/[>=0.1.0]@lulzbot/stable")
+        self.test_requires("sipbuildtool/[>=0.2.4]@lulzbot/stable")
 
     def config_options(self):
         if self.settings.os == "Windows":
