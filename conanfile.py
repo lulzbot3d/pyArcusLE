@@ -14,11 +14,11 @@ required_conan_version = ">=1.58.0"
 
 
 class ArcusConan(ConanFile):
-    name = "pyarcus"
+    name = "pyarcusle"
     license = "LGPL-3.0"
-    author = "Ultimaker B.V."
-    url = "https://github.com/Ultimaker/pyArcus"
-    description = "Communication library between internal components for Ultimaker software"
+    author = "Fargo Additive Manufacturing Equipment 3D, LLC."
+    url = "https://github.com/lulzbot3d/pyArcusLE"
+    description = "Fork of pyArcus: A Communication library between internal components for Ultimaker software"
     topics = ("conan", "python", "binding", "sip", "cura", "protobuf")
     settings = "os", "compiler", "build_type", "arch"
     revision_mode = "scm"
@@ -88,8 +88,8 @@ class ArcusConan(ConanFile):
                 )
 
     def build_requirements(self):
-        self.test_requires("standardprojectsettings/[>=0.1.0]@ultimaker/stable")
-        self.test_requires("sipbuildtool/[>=0.2.4]@ultimaker/stable")
+        self.test_requires("standardprojectsettings/[>=0.1.0]@lulzbot3d/stable")
+        self.test_requires("sipbuildtool/[>=0.2.4]@lulzbot3d/stable")
 
     def config_options(self):
         if self.settings.os == "Windows":
@@ -104,8 +104,8 @@ class ArcusConan(ConanFile):
         # Generate the pyproject.toml
         pp = self.python_requires["pyprojecttoolchain"].module.PyProjectToolchain(self)
         pp.blocks["tool_sip_project"].values["sip_files_dir"] = str(Path("python").as_posix())
-        pp.blocks["tool_sip_bindings"].values["name"] = "pyArcus"
-        pp.blocks["tool_sip_metadata"].values["name"] = "pyArcus"
+        pp.blocks["tool_sip_bindings"].values["name"] = "pyArcusLE"
+        pp.blocks["tool_sip_metadata"].values["name"] = "pyArcusLE"
         pp.blocks["extra_sources"].values["headers"] = ["PythonMessage.h"]
         pp.blocks["extra_sources"].values["sources"] = [str(Path("src", "PythonMessage.cpp").as_posix())]
         pp.generate()
