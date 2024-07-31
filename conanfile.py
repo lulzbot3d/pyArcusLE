@@ -88,8 +88,8 @@ class ArcusConan(ConanFile):
                 )
 
     def build_requirements(self):
-        self.test_requires("standardprojectsettings/[>=0.1.0]@lulzbot3d/stable")
-        self.test_requires("sipbuildtool/[>=0.2.4]@lulzbot3d/stable")
+        self.test_requires("standardprojectsettings/[>=0.1.0]@lulzbot/stable")
+        self.test_requires("sipbuildtool/[>=0.2.4]@lulzbot/stable")
 
     def config_options(self):
         if self.settings.os == "Windows":
