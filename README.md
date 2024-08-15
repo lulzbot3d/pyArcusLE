@@ -1,33 +1,29 @@
-# pyArcus
+# pyArcusLE
 
 <p align="center">
-    <a href="https://github.com/Ultimaker/pyArcus/actions/workflows/conan-package.yml" alt="Conan Package">
-        <img src="https://github.com/Ultimaker/pyArcus/actions/workflows/conan-package.yml/badge.svg" /></a>
-    <a href="https://github.com/Ultimaker/pyArcus/issues" alt="Open Issues">
-        <img src="https://img.shields.io/github/issues/ultimaker/pyArcus" /></a>
-    <a href="https://github.com/Ultimaker/pyArcus/issues?q=is%3Aissue+is%3Aclosed" alt="Closed Issues">
-        <img src="https://img.shields.io/github/issues-closed/ultimaker/pyArcus?color=g" /></a>
-    <a href="https://github.com/Ultimaker/pyArcus/pulls" alt="Pull Requests">
-        <img src="https://img.shields.io/github/issues-pr/ultimaker/pyArcus" /></a>
-    <a href="https://github.com/Ultimaker/pyArcus/graphs/contributors" alt="Contributors">
-        <img src="https://img.shields.io/github/contributors/ultimaker/pyArcus" /></a>
-    <a href="https://github.com/Ultimaker/pyArcus" alt="Repo Size">
-        <img src="https://img.shields.io/github/repo-size/ultimaker/pyArcus?style=flat" /></a>
-    <a href="https://github.com/Ultimaker/pyArcus/blob/master/LICENSE" alt="License">
-        <img src="https://img.shields.io/github/license/ultimaker/pyArcus?style=flat" /></a>
+    <a href="https://github.com/lulzbot3d/pyArcusLE/actions/workflows/conan-package.yml" alt="Conan Package">
+        <img src="https://github.com/lulzbot3d/pyArcusLE/actions/workflows/conan-package.yml/badge.svg" /></a>
+    <a href="https://github.com/lulzbot3d/pyArcusLE/issues" alt="Open Issues">
+        <img src="https://img.shields.io/github/issues/lulzbot3d/pyArcusLE" /></a>
+    <a href="https://github.com/lulzbot3d/pyArcusLE/pulls" alt="Pull Requests">
+        <img src="https://img.shields.io/github/issues-pr/lulzbot3d/pyArcusLE" /></a>
+    <a href="https://github.com/lulzbot3d/pyArcusLE" alt="Repo Size">
+        <img src="https://img.shields.io/github/repo-size/lulzbot3d/pyArcusLE?style=flat" /></a>
+    <a href="https://github.com/lulzbot3d/pyArcusLE/blob/master/LICENSE" alt="License">
+        <img src="https://img.shields.io/github/license/lulzbot3d/pyArcusLE?style=flat" /></a>
 </p>
 
-This library contains Python bindings, for libArcus, for creating a socket in a thread and using this socket to send and receive messages
-based on the Protocol Buffers library. It is designed to facilitate the communication between Cura and its backend and similar code.
+This library contains Python bindings, for libArcusLE, for creating a socket in a thread and using this socket to send and receive messages
+based on the Protocol Buffers library. It is designed to facilitate the communication between CuraLE and its backend and similar code.
 
 ## License
 
-![License](https://img.shields.io/github/license/ultimaker/pyArcus?style=flat)  
+![License](https://img.shields.io/github/license/lulzbot3d/pyArcusLE?style=flat)  
 pyArcus is released under terms of the LGPLv3 License. Terms of the license can be found in the LICENSE file. Or at
 http://www.gnu.org/licenses/lgpl.html
 
-> But in general it boils down to:  
-> **You need to share the source of any pyArcus modifications if you make an application with pyArcus.**
+> But in general it boils down to:
+> **You need to share the source of any pyArcusLE modifications if you make an application with pyArcusLE.**
 
 ## System Requirements
 
@@ -66,8 +62,6 @@ http://www.gnu.org/licenses/lgpl.html
 > and pip to manage our dependencies, which are stored on our JFrog Artifactory server and in the pypi.org.
 > At the moment not everything is fully ported yet, so bare with us.
 
-If you want to develop Cura with pyArcus see the Cura Wiki: [Running Cura from source](https://github.com/Ultimaker/Cura/wiki/Running-Cura-from-Source)
-
 If you have never used [Conan](https://conan.io/) read their [documentation](https://docs.conan.io/en/latest/index.html)
 which is quite extensive and well maintained. Conan is a Python program and can be installed using pip
 
@@ -75,29 +69,27 @@ which is quite extensive and well maintained. Conan is a Python program and can 
 
 ```bash
 pip install conan==1.56
-conan config install https://github.com/ultimaker/conan-config.git
+conan config install https://github.com/lulzbot3d/conan-config-le.git
 conan profile new default --detect --force
 ```
 
-Community developers would have to remove the Conan cura repository because it requires credentials. 
-
-Ultimaker developers need to request an account for our JFrog Artifactory server at IT
+Community developers would have to remove the Conan cura repository because it requires credentials.
 ```bash
 conan remote remove cura
 ```
 
 ### 2. Clone pyArcus
 ```bash
-git clone https://github.com/Ultimaker/pyArcus.git
+git clone https://github.com/lulzbot3d/pyArcusLE.git
 cd pyArcus
 ```
 
-### 3. Install & Build pyArcus (Release OR Debug)
+### 3. Install & Build pyArcusLE (Release OR Debug)
 
 #### Release
 ```bash
 conan install . --build=missing --update
-# optional for a specific version: conan install . pyarcus/<version>@<user>/<channel> --build=missing --update
+# optional for a specific version: conan install . pyarcusle/<version>@<user>/<channel> --build=missing --update
 conan build .
 # or
 sip-install
@@ -112,46 +104,46 @@ conan build .
 sip-install
 ```
 
-## Creating a new pyArcus Conan package
+## Creating a new pyArcusLE Conan package
 
-To create a new pyArcus Conan package such that it can be used in Cura and Uranium, run the following command:
+To create a new pyArcusLE Conan package such that it can be used in CuraLE and UraniumLE, run the following command:
 
 ```shell
-conan create . pyarcus/<version>@<username>/<channel> --build=missing --update
+conan create . pyarcusle/<version>@<username>/<channel> --build=missing --update
 ```
 
 This package will be stored in the local Conan cache (`~/.conan/data` or `C:\Users\username\.conan\data` ) and can be used in downstream
-projects, such as Cura and Uranium by adding it as a requirement in the `conanfile.py` or in `conandata.yml`.
+projects, such as CuraLE and UraniumLE by adding it as a requirement in the `conanfile.py` or in `conandata.yml`.
 
-Note: Make sure that the used `<version>` is present in the conandata.yml in the pyArcus root
+Note: Make sure that the used `<version>` is present in the conandata.yml in the pyArcusLE root
 
 You can also specify the override at the commandline, to use the newly created package, when you execute the `conan install`
 command in the root of the consuming project, with:
 
 
 ```shell
-conan install . -build=missing --update --require-override=pyarcus/<version>@<username>/<channel>
+conan install . -build=missing --update --require-override=pyarcusle/<version>@<username>/<channel>
 ```
 
-## Developing pyArcus In Editable Mode
+## Developing pyArcusLE In Editable Mode
 
 You can use your local development repository downsteam by adding it as an editable mode package.
 This means you can test this in a consuming project without creating a new package for this project every time.
 
 ```bash
-    conan editable add . pyArcus/<version>@<username>/<channel>
+    conan editable add . pyarcusle/<version>@<username>/<channel>
 ```
 
-Then in your downsteam projects (Cura) root directory override the package with your editable mode package.  
+Then in your downsteam projects (CuraLE) root directory override the package with your editable mode package.
 
 ```shell
-conan install . -build=missing --update --require-override=pyarcus/<version>@<username>/<channel>
+conan install . -build=missing --update --require-override=pyarcusle/<version>@<username>/<channel>
 ```
 
-## pyArcus python module
+## pyArcusLE python module
 
-This repository contains a Python module named pyArcus. To build it [sip](https://pypi.org/project/sip/) 6.5.1
-needs to be used to generate the C/C++ source code. We created a build tool for this called [sipbuildtool](https://github.com/Ultimaker/conan-ultimaker-index/recipes/sipbuildtool/conanfile.py)
+This repository contains a Python module named pyArcusLE. To build it [sip](https://pypi.org/project/sip/) 6.5.1
+needs to be used to generate the C/C++ source code. UltiMaker created a build tool for this called [sipbuildtool, the repo for which we have also forked,](https://github.com/lulzbot3d/conan-lulzbot-index/recipes/sipbuildtool/conanfile.py)
 which is automatically installed when you run the `conan install` command. This will set up a temporary virtual Python environment, install
 sip and generated the C/C++ source code. The virtual Python environment is then removed. Downside of this method is that Conan should be
 installed with the system Python, not the virtual Python environment.
@@ -193,6 +185,3 @@ a certain instance of a repeated message. See python/PythonMessage.h for more de
 The name Arcus is from the Roman god Arcus. This god is the roman equivalent of
 the goddess Iris, who is the personification of the rainbow and the messenger
 of the gods.
-
-## Java
-There is a Java port of pyArcus, which can be found [here](https://github.com/Ocarthon/pyArcus-Java).

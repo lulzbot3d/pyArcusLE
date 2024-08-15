@@ -13,12 +13,12 @@ from conan.tools.scm import Version
 required_conan_version = ">=1.58.0"
 
 
-class ArcusConan(ConanFile):
-    name = "pyarcus"
+class ArcusLEConan(ConanFile):
+    name = "pyarcusle"
     license = "LGPL-3.0"
-    author = "Ultimaker B.V."
-    url = "https://github.com/Ultimaker/pyArcus"
-    description = "Communication library between internal components for Ultimaker software"
+    author = "Ultimaker B.V., FAME3D LLC."
+    url = "https://github.com/lulzbot3d/pyArcusLE"
+    description = "Fork of pyArcus: A Communication library between internal components for Ultimaker software"
     topics = ("conan", "python", "binding", "sip", "cura", "protobuf")
     settings = "os", "compiler", "build_type", "arch"
     revision_mode = "scm"

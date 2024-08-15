@@ -10,7 +10,7 @@ from conan.errors import ConanException
 from conan.tools.files import copy
 
 
-class ArcusTestConan(ConanFile):
+class ArcusLETestConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     generators =  "VirtualRunEnv"
     test_type = "explicit"
@@ -41,4 +41,4 @@ class ArcusTestConan(ConanFile):
             self.run(f"python test.py", env = "conanrun", output = test_buf, run_environment=True)
             ret_val = test_buf.getvalue()
             if "True" not in ret_val:
-                raise ConanException("pyArcus wasn't build correctly!")
+                raise ConanException("pyArcusLE wasn't built correctly!")
