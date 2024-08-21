@@ -13,7 +13,7 @@ from conan.tools.scm import Version
 required_conan_version = ">=1.58.0"
 
 
-class ArcusLEConan(ConanFile):
+class PyArcusLEConan(ConanFile):
     name = "pyarcusle"
     license = "LGPL-3.0"
     author = "Ultimaker B.V., FAME3D LLC."
@@ -98,8 +98,8 @@ class ArcusLEConan(ConanFile):
         # Generate the pyproject.toml
         pp = self.python_requires["pyprojecttoolchain"].module.PyProjectToolchain(self)
         pp.blocks["tool_sip_project"].values["sip_files_dir"] = str(Path("python").as_posix())
-        pp.blocks["tool_sip_bindings"].values["name"] = "pyArcus"
-        pp.blocks["tool_sip_metadata"].values["name"] = "pyArcus"
+        pp.blocks["tool_sip_bindings"].values["name"] = "pyArcusLE"
+        pp.blocks["tool_sip_metadata"].values["name"] = "pyArcusLE"
         pp.blocks["extra_sources"].values["headers"] = ["PythonMessage.h"]
         pp.blocks["extra_sources"].values["sources"] = [str(Path("src", "PythonMessage.cpp").as_posix())]
         pp.generate()

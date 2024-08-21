@@ -10,7 +10,7 @@ from conan.errors import ConanException
 from conan.tools.files import copy
 
 
-class ArcusLETestConan(ConanFile):
+class PyArcusLETestConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     generators =  "VirtualRunEnv"
     test_type = "explicit"

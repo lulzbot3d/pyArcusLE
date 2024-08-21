@@ -18,6 +18,6 @@ target_include_directories(pyArcusLE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
         )
 target_link_libraries(pyArcusLE INTERFACE arcusle::arcusle protobuf::libprotobuf cpython::cpython)
-add_sip_module(pyArcus)
-install_sip_module(pyArcus)
+add_sip_module(pyArcusLE)
+install_sip_module(pyArcusLE)
 
