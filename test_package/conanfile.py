@@ -41,4 +41,4 @@ class PyArcusLETestConan(ConanFile):
             self.run(f"python test.py", env = "conanrun", output = test_buf, run_environment=True)
             ret_val = test_buf.getvalue()
             if "True" not in ret_val:
-                raise ConanException("pyArcusLE wasn't built correctly!")
+                raise ConanException("pyArcus wasn't built correctly!")

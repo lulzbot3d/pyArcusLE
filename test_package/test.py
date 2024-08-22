@@ -1,11 +1,9 @@
 import os
 import sys
-
 pdir = os.path.dirname(os.path.realpath(__file__))
 from platform import system
 if system() == "Windows":
     os.add_dll_directory(pdir)
-
 import pyArcus
 from threading import Thread
 import time
