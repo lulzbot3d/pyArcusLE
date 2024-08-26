@@ -1,33 +1,23 @@
 # pyArcusLE
 
-<p align="center">
-    <a href="https://github.com/lulzbot3d/pyArcusLE/actions/workflows/conan-package.yml" alt="Conan Package">
-        <img src="https://github.com/lulzbot3d/pyArcusLE/actions/workflows/conan-package.yml/badge.svg" /></a>
-    <a href="https://github.com/lulzbot3d/pyArcusLE/issues" alt="Open Issues">
-        <img src="https://img.shields.io/github/issues/lulzbot3d/pyArcusLE" /></a>
-    <a href="https://github.com/lulzbot3d/pyArcusLE/pulls" alt="Pull Requests">
-        <img src="https://img.shields.io/github/issues-pr/lulzbot3d/pyArcusLE" /></a>
-    <a href="https://github.com/lulzbot3d/pyArcusLE" alt="Repo Size">
-        <img src="https://img.shields.io/github/repo-size/lulzbot3d/pyArcusLE?style=flat" /></a>
-    <a href="https://github.com/lulzbot3d/pyArcusLE/blob/master/LICENSE" alt="License">
-        <img src="https://img.shields.io/github/license/lulzbot3d/pyArcusLE?style=flat" /></a>
-</p>
+[![Conan Package](https://github.com/lulzbot3d/pyArcusLE/actions/workflows/conan-package.yml/badge.svg)](https://github.com/lulzbot3d/pyArcusLE/actions/workflows/conan-package.yml)
+[![Repo Size](https://img.shields.io/github/repo-size/lulzbot3d/pyArcusLE?style=flat)](https://github.com/lulzbot3d/pyArcusLE)
+[![License](https://img.shields.io/github/license/lulzbot3d/pyArcusLE?style=flat)](https://github.com/lulzbot3d/pyArcusLE/blob/master/LICENSE)
 
 This library contains Python bindings, for libArcusLE, for creating a socket in a thread and using this socket to send and receive messages
 based on the Protocol Buffers library. It is designed to facilitate the communication between CuraLE and its backend and similar code.
 
 ## License
 
-![License](https://img.shields.io/github/license/lulzbot3d/pyArcusLE?style=flat)  
-pyArcus is released under terms of the LGPLv3 License. Terms of the license can be found in the LICENSE file. Or at
-http://www.gnu.org/licenses/lgpl.html
+pyArcus is released under terms of the LGPLv3 License. Terms of the license can be found in the LICENSE file or [on the GNU website.](https://www.gnu.org/licenses/lgpl-3.0.html#license-text)
 
-> But in general it boils down to:
+> In general it boils down to:  
 > **You need to share the source of any pyArcusLE modifications if you make an application with pyArcusLE.**
 
 ## System Requirements
 
 ### Windows
+
 - Python 3.6 or higher
 - Ninja 1.10 or higher
 - VS2022 or higher
@@ -36,7 +26,8 @@ http://www.gnu.org/licenses/lgpl.html
 - sip 6.5.0 or higher
 - Conan 1.56.0
 
-### MacOs
+### MacOS
+
 - Python 3.6 or higher
 - Ninja 1.10 or higher
 - apply clang 11 or higher
@@ -46,6 +37,7 @@ http://www.gnu.org/licenses/lgpl.html
 - Conan 1.56.0
 
 ### Linux
+
 - Python 3.6 or higher
 - Ninja 1.10 or higher
 - gcc 12 or higher
@@ -53,7 +45,6 @@ http://www.gnu.org/licenses/lgpl.html
 - make
 - sip 6.5.0 or higher
 - Conan 1.56.0
-
 
 ## How To Build
 
@@ -73,20 +64,23 @@ conan config install https://github.com/lulzbot3d/conan-config-le.git
 conan profile new default --detect --force
 ```
 
-Community developers would have to remove the Conan cura repository because it requires credentials.
+Community developers would have to remove the Conan cura-le repository because it requires credentials.
+
 ```bash
-conan remote remove cura
+conan remote remove cura-le
 ```
 
-### 2. Clone pyArcus
+### 2. Clone pyArcusLE
+
 ```bash
 git clone https://github.com/lulzbot3d/pyArcusLE.git
-cd pyArcus
+cd pyArcusLE
 ```
 
 ### 3. Install & Build pyArcusLE (Release OR Debug)
 
 #### Release
+
 ```bash
 conan install . --build=missing --update
 # optional for a specific version: conan install . pyarcusle/<version>@<user>/<channel> --build=missing --update
@@ -120,7 +114,6 @@ Note: Make sure that the used `<version>` is present in the conandata.yml in the
 You can also specify the override at the commandline, to use the newly created package, when you execute the `conan install`
 command in the root of the consuming project, with:
 
-
 ```shell
 conan install . -build=missing --update --require-override=pyarcusle/<version>@<username>/<channel>
 ```
@@ -142,13 +135,9 @@ conan install . -build=missing --update --require-override=pyarcusle/<version>@<
 
 ## pyArcusLE python module
 
-This repository contains a Python module named pyArcusLE. To build it [sip](https://pypi.org/project/sip/) 6.5.1
-needs to be used to generate the C/C++ source code. UltiMaker created a build tool for this called [sipbuildtool, the repo for which we have also forked,](https://github.com/lulzbot3d/conan-lulzbot-index/recipes/sipbuildtool/conanfile.py)
-which is automatically installed when you run the `conan install` command. This will set up a temporary virtual Python environment, install
-sip and generated the C/C++ source code. The virtual Python environment is then removed. Downside of this method is that Conan should be
-installed with the system Python, not the virtual Python environment.
+This repository contains a Python module named pyArcusLE. To build it, [sip](https://pypi.org/project/sip/) 6.5.1 needs to be used to generate the C/C++ source code. UltiMaker created a build tool for this called [sipbuildtool, the repo for which we have also forked](https://github.com/lulzbot3d/conan-lulzbot-index/recipes/sipbuildtool/conanfile.py), which is automatically installed when you run the `conan install` command. This will set up a temporary virtual Python environment, install sip and generate the C/C++ source code. The virtual Python environment is then removed. Downside of this method is that Conan should be installed with the system Python, not the virtual Python environment.
 
-#### usage
+### Usage
 
 ```python
 import pyArcus
@@ -157,28 +146,13 @@ socket = pyArcus.Socket()
 
 ## Using the Socket
 
+The socket assumes a very simple and strict wire protocol: one 32-bit integer with a header, one 32-bit integer with the message size, one 32-bit integer with a type id then a byte array containing the message as serialized by Protobuf. The receiving side checks for these fields and will deserialize the message, after which it can be processed by the application.
 
-The socket assumes a very simple and strict wire protocol: one 32-bit integer with
-a header, one 32-bit integer with the message size, one 32-bit integer with a type id
-then a byte array containing the message as serialized by Protobuf. The receiving side
-checks for these fields and will deserialize the message, after which it can be processed 
-by the application.
+To send or receive messages, the message first needs to be registered on both sides with a call to `registerMessageType()`. You can also register all messages from a Protobuf .proto file with a call to `registerAllMessageTypes()`. For the Python bindings, this is the only supported way of registering since there are no Python classses for individual message types.
 
-To send or receive messages, the message first needs to be registered on both sides with 
-a call to `registerMessageType()`. You can also register all messages from a Protobuf 
- .proto file with a call to `registerAllMessageTypes()`. For the Python bindings, this 
-is the only supported way of registering since there are no Python classses for 
-individual message types.
+The Python bindings expose the same API as the Public C++ API, except for the missing `registerMessageType()` and the individual messages. The Python bindings wrap the messages in a class that exposes the message's properties as Python properties, and can thus be set the same way you would set any other Python property.
 
-The Python bindings expose the same API as the Public C++ API, except for the missing
-`registerMessageType()` and the individual messages. The Python bindings wrap the
-messages in a class that exposes the message's properties as Python properties, and
-can thus be set the same way you would set any other Python property. 
-
-The exception is repeated fields. Currently, only repeated messages are supported, which
-can be created through the `addRepeatedMessage()` method. `repeatedMessageCount()` will
-return the number of repeated messages on an object and `getRepeatedMessage()` will get
-a certain instance of a repeated message. See python/PythonMessage.h for more details.
+The exception is repeated fields. Currently, only repeated messages are supported, which can be created through the `addRepeatedMessage()` method. `repeatedMessageCount()` will return the number of repeated messages on an object and `getRepeatedMessage()` will get a certain instance of a repeated message. See python/PythonMessage.h for more details.
 
 ## Origin of the Name
 
