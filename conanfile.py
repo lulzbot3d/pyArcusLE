@@ -10,7 +10,7 @@ from conan.tools.files import copy, update_conandata
 from conan.tools.microsoft import check_min_vs, is_msvc, is_msvc_static_runtime
 from conan.tools.scm import Version, Git
 
-required_conan_version = ">=1.58.0"
+required_conan_version = ">=2.7.0"
 
 
 class ArcusConan(ConanFile):
@@ -74,6 +74,7 @@ class ArcusConan(ConanFile):
             self.requires(req)
         self.requires("protobuf/3.21.12", transitive_headers=True)
         self.requires("zlib/1.3.1")
+        self.requires("cpython/3.12.2")
 
     def validate(self):
         if self.settings.compiler.cppstd:
@@ -89,7 +90,6 @@ class ArcusConan(ConanFile):
     def build_requirements(self):
         self.test_requires("standardprojectsettings/[>=0.2.0]@ultimaker/cura_11622")  # FIXME: use stable after merge
         self.test_requires("sipbuildtool/[>=0.3.0]@ultimaker/cura_11622")  # FIXME: use stable after merge
-        self.test_requires("cpython/3.12.2@ultimaker/cura_11622")  # FIXME: use stable after merge
 
     def config_options(self):
         if self.settings.os == "Windows":
