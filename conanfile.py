@@ -10,7 +10,7 @@ from conan.tools.files import copy, update_conandata
 from conan.tools.microsoft import check_min_vs, is_msvc, is_msvc_static_runtime
 from conan.tools.scm import Version, Git
 
-required_conan_version = ">=2.7.0"
+required_conan_version = ">=1.58.0"
 
 
 class ArcusConan(ConanFile):
@@ -74,7 +74,6 @@ class ArcusConan(ConanFile):
             self.requires(req)
         self.requires("protobuf/3.21.12", transitive_headers=True)
         self.requires("zlib/1.3.1")
-        self.requires("cpython/3.12.2")
 
     def validate(self):
         if self.settings.compiler.cppstd:
@@ -90,6 +89,7 @@ class ArcusConan(ConanFile):
     def build_requirements(self):
         self.test_requires("standardprojectsettings/[>=0.2.0]@ultimaker/cura_11622")  # FIXME: use stable after merge
         self.test_requires("sipbuildtool/[>=0.3.0]@ultimaker/cura_11622")  # FIXME: use stable after merge
+        self.test_requires("cpython/3.12.2@ultimaker/cura_11622")  # FIXME: use stable after merge
 
     def config_options(self):
         if self.settings.os == "Windows":
@@ -114,6 +114,16 @@ class ArcusConan(ConanFile):
         if is_msvc(self):
             tc.variables["USE_MSVC_RUNTIME_LIBRARY_DLL"] = not is_msvc_static_runtime(self)
         tc.cache_variables["CMAKE_POLICY_DEFAULT_CMP0148"] = "OLD"
+        cpython_conf = self.dependencies["cpython"].conf_info
+        tc.variables["Python_EXECUTABLE"] = cpython_conf.get("user.cpython:python").replace("\\", "/")
+        tc.variables["Python_ROOT_DIR"] = cpython_conf.get("user.cpython:python_root").replace("\\", "/")
+        cpython_options = self.dependencies["cpython"].options
+        tc.variables["Python_USE_STATIC_LIBS"] = not cpython_options.shared
+        tc.variables["Python_FIND_FRAMEWORK"] = "NEVER"
+        tc.variables["Python_FIND_REGISTRY"] = "NEVER"
+        tc.variables["Python_FIND_IMPLEMENTATIONS"] = "CPython"
+        tc.variables["Python_FIND_STRATEGY"] = "LOCATION"
+        tc.variables["Python_SITEARCH"] = "site-packages"
         tc.generate()
 
         vb = VirtualBuildEnv(self)
