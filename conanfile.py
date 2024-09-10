@@ -5,7 +5,7 @@ from conan import ConanFile
 from conan.errors import ConanInvalidConfiguration
 from conan.tools.build import check_min_cppstd
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
-from conan.tools.env import VirtualBuildEnv
+from conan.tools.env import VirtualBuildEnv, VirtualRunEnv
 from conan.tools.files import copy, update_conandata
 from conan.tools.microsoft import check_min_vs, is_msvc, is_msvc_static_runtime
 from conan.tools.scm import Version, Git
@@ -22,7 +22,7 @@ class ArcusConan(ConanFile):
     topics = ("conan", "python", "binding", "sip", "cura", "protobuf")
     settings = "os", "compiler", "build_type", "arch"
     exports = "LICENSE*"
-    generators = "CMakeDeps", "VirtualRunEnv"
+    generators = "CMakeDeps"
     package_type = "library"
 
     python_requires = "pyprojecttoolchain/[>=0.2.0]@ultimaker/cura_11622", "sipbuildtool/[>=0.3.0]@ultimaker/cura_11622"  # FIXME: use stable after merge
@@ -74,6 +74,7 @@ class ArcusConan(ConanFile):
             self.requires(req)
         self.requires("protobuf/3.21.12", transitive_headers=True)
         self.requires("zlib/1.3.1")
+        self.requires("cpython/3.12.2")
 
     def validate(self):
         if self.settings.compiler.cppstd:
@@ -89,7 +90,6 @@ class ArcusConan(ConanFile):
     def build_requirements(self):
         self.test_requires("standardprojectsettings/[>=0.2.0]@ultimaker/cura_11622")  # FIXME: use stable after merge
         self.test_requires("sipbuildtool/[>=0.3.0]@ultimaker/cura_11622")  # FIXME: use stable after merge
-        self.test_requires("cpython/3.12.2@ultimaker/cura_11622")  # FIXME: use stable after merge
 
     def config_options(self):
         if self.settings.os == "Windows":
@@ -113,21 +113,13 @@ class ArcusConan(ConanFile):
         tc = CMakeToolchain(self)
         if is_msvc(self):
             tc.variables["USE_MSVC_RUNTIME_LIBRARY_DLL"] = not is_msvc_static_runtime(self)
-        tc.cache_variables["CMAKE_POLICY_DEFAULT_CMP0148"] = "OLD"
-        cpython_conf = self.dependencies["cpython"].conf_info
-        tc.variables["Python_EXECUTABLE"] = cpython_conf.get("user.cpython:python").replace("\\", "/")
-        tc.variables["Python_ROOT_DIR"] = cpython_conf.get("user.cpython:python_root").replace("\\", "/")
-        cpython_options = self.dependencies["cpython"].options
-        tc.variables["Python_USE_STATIC_LIBS"] = not cpython_options.shared
-        tc.variables["Python_FIND_FRAMEWORK"] = "NEVER"
-        tc.variables["Python_FIND_REGISTRY"] = "NEVER"
-        tc.variables["Python_FIND_IMPLEMENTATIONS"] = "CPython"
-        tc.variables["Python_FIND_STRATEGY"] = "LOCATION"
-        tc.variables["Python_SITEARCH"] = "site-packages"
         tc.generate()
 
         vb = VirtualBuildEnv(self)
-        vb.generate(scope="build")
+        vb.generate()
+
+        vr = VirtualRunEnv(self)
+        vr.generate(scope="build")
 
         # Generate the Source code from SIP
         sip = self.python_requires["sipbuildtool"].module.SipBuildTool(self)
