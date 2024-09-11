@@ -104,8 +104,8 @@ class ArcusConan(ConanFile):
         # Generate the pyproject.toml
         pp = self.python_requires["pyprojecttoolchain"].module.PyProjectToolchain(self)
         pp.blocks["tool_sip_project"].values["sip_files_dir"] = str(Path("python").as_posix())
-        pp.blocks["tool_sip_bindings"].values["name"] = "pyArcus"
         pp.blocks["tool_sip_metadata"].values["name"] = "pyArcus"
+        pp.blocks["tool_sip_bindings"].values["name"] = "pyArcus"
         pp.blocks["extra_sources"].values["headers"] = ["PythonMessage.h"]
         pp.blocks["extra_sources"].values["sources"] = [str(Path("src", "PythonMessage.cpp").as_posix())]
         pp.generate()
