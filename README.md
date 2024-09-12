@@ -1,15 +1,16 @@
 # pyArcusLE
 
-[![Conan Package](https://github.com/lulzbot3d/pyArcusLE/actions/workflows/conan-package.yml/badge.svg)](https://github.com/lulzbot3d/pyArcusLE/actions/workflows/conan-package.yml)
-[![Repo Size](https://img.shields.io/github/repo-size/lulzbot3d/pyArcusLE?style=flat)](https://github.com/lulzbot3d/pyArcusLE)
-[![License](https://img.shields.io/github/license/lulzbot3d/pyArcusLE?style=flat)](https://github.com/lulzbot3d/pyArcusLE/blob/master/LICENSE)
+[![Conan Badge]][Conan]
+
+[![Size Badge]][Size]
+[![License Badge]][License]
 
 This library contains Python bindings, for libArcusLE, for creating a socket in a thread and using this socket to send and receive messages
 based on the Protocol Buffers library. It is designed to facilitate the communication between CuraLE and its backend and similar code.
 
 ## License
 
-pyArcus is released under terms of the LGPLv3 License. Terms of the license can be found in the LICENSE file or [on the GNU website.](https://www.gnu.org/licenses/lgpl-3.0.html#license-text)
+pyArcusLE is released under terms of the LGPLv3 License. Terms of the license can be found in the LICENSE file or [on the GNU website.](https://www.gnu.org/licenses/lgpl-3.0.html#license-text)
 
 > In general it boils down to:  
 > **You need to share the source of any pyArcusLE modifications if you make an application with pyArcusLE.**
@@ -159,3 +160,13 @@ The exception is repeated fields. Currently, only repeated messages are supporte
 The name Arcus is from the Roman god Arcus. This god is the roman equivalent of
 the goddess Iris, who is the personification of the rainbow and the messenger
 of the gods.
+
+<!----------------------------------------------------------------------->
+
+[Conan Badge]: https://img.shields.io/github/actions/workflow/status/lulzbot3d/pyArcusLE/conan-package.yml?style=for-the-badge&color=C1D82F&labelColor=788814&logoColor=white&logo=conan
+[Size Badge]: https://img.shields.io/github/repo-size/lulzbot3d/pyArcusLE?style=for-the-badge&color=CCCCCC&labelColor=666666&logoColor=white&logo=googleanalytics
+[License Badge]: https://img.shields.io/github/license/lulzbot3d/pyArcusLE?style=for-the-badge&color=A32D2A&labelColor=511615&logoColor=white&logo=gnu
+
+[Conan]: https://github.com/lulzbot3d/pyArcusLE/actions/workflows/conan-package.yml
+[Size]: https://github.com/lulzbot3d/pyArcusLE
+[License]: LICENSE
