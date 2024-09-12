@@ -2,8 +2,10 @@ cmake_policy(SET CMP0091 NEW)
 project(pyarcusle)
 cmake_minimum_required(VERSION 3.20)
 
+# Set LC_LIBRARY_PATH variable to ensure CMake can actually use the CPython library
+set(ENV{LD_LIBRARY_PATH} "${CMAKE_LIBRARY_PATH}:${LD_LIBRARY_PATH}")
+find_package(Python3 REQUIRED)
 find_package(protobuf REQUIRED)
-find_package(cpython REQUIRED)
 find_package(arcusle REQUIRED)
 
 find_package(standardprojectsettings REQUIRED)
