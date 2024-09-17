@@ -73,7 +73,7 @@ class PyArcusLEConan(ConanFile):
         for req in self.conan_data["requirements"]:
             self.requires(req)
         self.requires("protobuf/3.21.9", transitive_headers=True)
-        self.requires("cpython/3.12.2")  # Maybe place this in build_requirements as well
+        self.requires("cpython/3.10.4")  # Maybe place this in build_requirements as well
         self.requires("zlib/1.2.12")
 
     def validate(self):
@@ -114,6 +114,13 @@ class PyArcusLEConan(ConanFile):
         if is_msvc(self):
             tc.variables["USE_MSVC_RUNTIME_LIBRARY_DLL"] = not is_msvc_static_runtime(self)
         tc.cache_variables["CMAKE_POLICY_DEFAULT_CMP0077"] = "NEW"
+        tc.variables["Python_EXECUTABLE"] = self.deps_user_info["cpython"].python.replace("\\", "/")
+        tc.variables["Python_USE_STATIC_LIBS"] = not self.options["cpython"].shared
+        tc.variables["Python_ROOT_DIR"] = self.deps_cpp_info["cpython"].rootpath.replace("\\", "/")
+        tc.variables["Python_FIND_FRAMEWORK"] = "NEVER"
+        tc.variables["Python_FIND_REGISTRY"] = "NEVER"
+        tc.variables["Python_FIND_IMPLEMENTATIONS"] = "CPython"
+        tc.variables["Python_FIND_STRATEGY"] = "LOCATION"
         tc.variables["Python_SITEARCH"] = "site-packages"
         tc.generate()
 
