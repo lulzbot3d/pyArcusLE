@@ -25,7 +25,6 @@ jobs:
         uses: lulzbot3d/cura-le-workflows/.github/workflows/conan-recipe-version.yml@main
         with:
             project_name: pyarcusle
-            release: true
 
     conan-package-export:
         needs: [ conan-recipe-version ]
