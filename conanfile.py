@@ -73,7 +73,6 @@ class ArcusConan(ConanFile):
         for req in self.conan_data["requirements"]:
             self.requires(req)
         self.requires("protobuf/3.21.12", transitive_headers=True)
-        self.requires("zlib/1.3.1")
         self.requires("cpython/3.12.2")
 
     def validate(self):
@@ -98,7 +97,6 @@ class ArcusConan(ConanFile):
     def configure(self):
         if self.options.shared:
             self.options.rm_safe("fPIC")
-        self.options["cpython"].shared = True
 
     def generate(self):
         # Generate the pyproject.toml
