@@ -35,7 +35,7 @@ public:
     void close() /ReleaseGIL/;
     void reset() /ReleaseGIL/;
 
-    void sendMessage(MessagePtr message);
+    bool sendMessage(MessagePtr message);
     MessagePtr takeNextMessage();
     MessagePtr createMessage(const std::string& type_name);
 
