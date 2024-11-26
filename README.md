@@ -163,9 +163,9 @@ of the gods.
 
 <!----------------------------------------------------------------------->
 
-[Conan Badge]: https://img.shields.io/github/actions/workflow/status/lulzbot3d/pyArcusLE/conan-package.yml?style=for-the-badge&color=C1D82F&labelColor=788814&logoColor=white&logo=Conan&label=Conan%20Package
-[Size Badge]: https://img.shields.io/github/repo-size/lulzbot3d/pyArcusLE?style=for-the-badge&color=CCCCCC&labelColor=666666&logoColor=white&logo=GoogleAnalytics
-[License Badge]: https://img.shields.io/github/license/lulzbot3d/pyArcusLE?style=for-the-badge&color=A32D2A&labelColor=511615&logoColor=white&logo=GNU
+[Conan Badge]: https://img.shields.io/github/actions/workflow/status/lulzbot3d/pyArcusLE/conan-package.yml?style=for-the-badge&logoColor=white&logo=Conan&label=Conan%20Package
+[Size Badge]: https://img.shields.io/github/repo-size/lulzbot3d/pyArcusLE?style=for-the-badge&logoColor=white&logo=GoogleAnalytics
+[License Badge]: https://img.shields.io/github/license/lulzbot3d/pyArcusLE?style=for-the-badge&logoColor=white&logo=GNU
 
 [Conan]: https://github.com/lulzbot3d/pyArcusLE/actions/workflows/conan-package.yml
 [Size]: https://github.com/lulzbot3d/pyArcusLE

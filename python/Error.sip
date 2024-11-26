@@ -9,6 +9,7 @@ enum class ErrorCode
     BindFailedError,
     AcceptFailedError,
     SendFailedError,
+    MessageTooBigError,
     ReceiveFailedError,
     UnknownMessageTypeError,
     ParseFailedError,
