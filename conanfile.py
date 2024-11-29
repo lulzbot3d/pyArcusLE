@@ -73,7 +73,7 @@ class ArcusConan(ConanFile):
         for req in self.conan_data["requirements"]:
             self.requires(req)
         self.requires("protobuf/3.21.12", transitive_headers=True)
-        self.requires("cpython/3.12.2")
+        self.requires("cpython/3.12.7")
 
     def validate(self):
         if self.settings.compiler.cppstd:
