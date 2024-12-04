@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.20)
 
 find_package(protobuf REQUIRED)
 find_package(cpython REQUIRED)
-find_package(arcusle REQUIRED)
+find_package(arcus REQUIRED)
 
 find_package(standardprojectsettings REQUIRED)
 find_package(sipbuildtool REQUIRED)
@@ -17,7 +17,7 @@ target_include_directories(pyArcus
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
         )
-target_link_libraries(pyArcus INTERFACE arcusle::arcusle protobuf::libprotobuf cpython::cpython)
+target_link_libraries(pyArcus INTERFACE arcus::arcus protobuf::libprotobuf cpython::cpython)
 add_sip_module(pyArcus)
 install_sip_module(pyArcus)
 
