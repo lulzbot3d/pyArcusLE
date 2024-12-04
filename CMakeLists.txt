@@ -1,9 +1,9 @@
+cmake_minimum_required(VERSION 3.20)
 cmake_policy(SET CMP0091 NEW)
 project(pyarcus)
-cmake_minimum_required(VERSION 3.20)
 
 find_package(protobuf REQUIRED)
-find_package(cpython REQUIRED)
+find_package(Python REQUIRED)
 find_package(arcus REQUIRED)
 
 find_package(standardprojectsettings REQUIRED)
@@ -20,4 +20,3 @@ target_include_directories(pyArcus
 target_link_libraries(pyArcus INTERFACE arcus::arcus protobuf::libprotobuf cpython::cpython)
 add_sip_module(pyArcus)
 install_sip_module(pyArcus)
-
