@@ -88,3 +88,11 @@ test_package/build/
 
 pyproject.toml
 build-*/
+/test_package/metadata/
+/test_package/conanbuild.sh
+/test_package/conanbuildenv-release-x86_64.sh
+/test_package/conanrunenv-release-x86_64.sh
+/test_package/conanrun.sh
+/test_package/deactivate_conanbuild.sh
+/test_package/deactivate_conanrun.sh
+/test_package/deactivate_conanrunenv-release-x86_64.sh
