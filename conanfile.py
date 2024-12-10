@@ -1,11 +1,11 @@
+import os
 from pathlib import Path
-from os import path
 
 from conan import ConanFile
 from conan.errors import ConanInvalidConfiguration
 from conan.tools.build import check_min_cppstd
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
-from conan.tools.env import VirtualBuildEnv
+from conan.tools.env import VirtualBuildEnv, VirtualRunEnv
 from conan.tools.files import copy, update_conandata
 from conan.tools.microsoft import check_min_vs, is_msvc, is_msvc_static_runtime
 from conan.tools.scm import Version, Git
@@ -21,9 +21,9 @@ class PyArcusLEConan(ConanFile):
     description = "Fork of pyArcus: A Communication library between internal components for Ultimaker software"
     topics = ("conan", "python", "binding", "sip", "cura", "protobuf")
     settings = "os", "compiler", "build_type", "arch"
-    revision_mode = "scm"
     exports = "LICENSE*"
-    generators = "CMakeDeps", "VirtualBuildEnv", "VirtualRunEnv"
+    generators = "CMakeDeps"
+    package_type = "library"
 
     python_requires = "pyprojecttoolchain/[>=0.1.7]@lulzbot/stable", "sipbuildtool/[>=0.2.4]@lulzbot/stable"
 
@@ -42,8 +42,7 @@ class PyArcusLEConan(ConanFile):
 
     def set_version(self):
         if not self.version:
-            build_meta = "" if self.develop else "+source"
-            self.version = self.conan_data["version"] + build_meta
+            self.version = self.conan_data["version"]
 
     def export(self):
         git = Git(self)
@@ -65,9 +64,10 @@ class PyArcusLEConan(ConanFile):
 
     def export_sources(self):
         copy(self, "CMakeLists.txt", self.recipe_folder, self.export_sources_folder)
-        copy(self, "*", path.join(self.recipe_folder, "src"), path.join(self.export_sources_folder, "src"))
-        copy(self, "*", path.join(self.recipe_folder, "include"), path.join(self.export_sources_folder, "include"))
-        copy(self, "*", path.join(self.recipe_folder, "python"), path.join(self.export_sources_folder, "python"))
+        copy(self, "*", os.path.join(self.recipe_folder, "src"), os.path.join(self.export_sources_folder, "src"))
+        copy(self, "*", os.path.join(self.recipe_folder, "include"),
+             os.path.join(self.export_sources_folder, "include"))
+        copy(self, "*", os.path.join(self.recipe_folder, "python"), os.path.join(self.export_sources_folder, "python"))
 
     def requirements(self):
         for req in self.conan_data["requirements"]:
@@ -104,8 +104,8 @@ class PyArcusLEConan(ConanFile):
         # Generate the pyproject.toml
         pp = self.python_requires["pyprojecttoolchain"].module.PyProjectToolchain(self)
         pp.blocks["tool_sip_project"].values["sip_files_dir"] = str(Path("python").as_posix())
-        pp.blocks["tool_sip_bindings"].values["name"] = "pyArcus"
         pp.blocks["tool_sip_metadata"].values["name"] = "pyArcus"
+        pp.blocks["tool_sip_bindings"].values["name"] = "pyArcus"
         pp.blocks["extra_sources"].values["headers"] = ["PythonMessage.h"]
         pp.blocks["extra_sources"].values["sources"] = [str(Path("src", "PythonMessage.cpp").as_posix())]
         pp.generate()
@@ -125,7 +125,10 @@ class PyArcusLEConan(ConanFile):
         tc.generate()
 
         vb = VirtualBuildEnv(self)
-        vb.generate(scope="build")
+        vb.generate()
+
+        vr = VirtualRunEnv(self)
+        vr.generate(scope="build")
 
         # Generate the Source code from SIP
         sip = self.python_requires["sipbuildtool"].module.SipBuildTool(self)
@@ -138,6 +141,12 @@ class PyArcusLEConan(ConanFile):
         if self.settings.os in ["Linux", "FreeBSD", "Macos"]:
             self.cpp.package.system_libs = ["pthread"]
 
+        self.cpp.package.lib = ["pyArcus"]
+
+        self.cpp.package.libdirs = ["lib"]
+        self.layouts.build.runenv_info.prepend_path("PYTHONPATH", ".")
+        self.layouts.package.runenv_info.prepend_path("PYTHONPATH", "lib")
+
     def build(self):
         cmake = CMake(self)
         cmake.configure()
@@ -145,16 +154,12 @@ class PyArcusLEConan(ConanFile):
 
     def package(self):
         copy(self, pattern="LICENSE*", dst="licenses", src=self.source_folder)
-        for ext in ("*.pyi", "*.so", "*.lib", "*.a", "*.pyd"):
-            copy(self, ext, src = self.build_folder, dst = path.join(self.package_folder, "lib"), keep_path = False)
 
-        for ext in ("*.dll", "*.so", "*.dylib"):
-            copy(self, ext, src = self.build_folder, dst = path.join(self.package_folder, "bin"), keep_path = False)
-        copy(self, "*.h", path.join(self.source_folder, "include"), path.join(self.package_folder, "include"))
+        for ext in ("*.pyi", "*.so", "*.lib", "*.a", "*.pyd", "*.dylib", "*.dll"):
+            copy(self, ext, src=self.build_folder,
+                 dst=os.path.join(self.package_folder, "lib"), keep_path=False)
+
+        copy(self, "*.h", os.path.join(self.source_folder, "include"), os.path.join(self.package_folder, "include"))
 
     def package_info(self):
-        self.cpp_info.libdirs = [ path.join(self.package_folder, "lib") ]
-        if self.in_local_cache:
-            self.runenv_info.append_path("PYTHONPATH", path.join(self.package_folder, "lib"))
-        else:
-            self.runenv_info.append_path("PYTHONPATH", self.build_folder)
+        self.conf_info.define("user.pyarcus:pythonpath", os.path.join(self.package_folder, self.cpp.package.libdirs[0]))
