@@ -5,15 +5,15 @@
 [![Size Badge]][Size]
 [![License Badge]][License]
 
-This library contains Python bindings, for libArcusLE, for creating a socket in a thread and using this socket to send and receive messages
+This library contains Python bindings, for libArcus, for creating a socket in a thread and using this socket to send and receive messages
 based on the Protocol Buffers library. It is designed to facilitate the communication between CuraLE and its backend and similar code.
 
 ## License
 
-pyArcusLE is released under terms of the LGPLv3 License. Terms of the license can be found in the LICENSE file or [on the GNU website.](https://www.gnu.org/licenses/lgpl-3.0.html#license-text)
+pyArcus is released under terms of the LGPLv3 License. Terms of the license can be found in the LICENSE file or [on the GNU website.](https://www.gnu.org/licenses/lgpl-3.0.html#license-text)
 
 > In general it boils down to:  
-> **You need to share the source of any pyArcusLE modifications if you make an application with pyArcusLE.**
+> **You need to share the source of any pyArcusLE modifications if you make an application with pyArcus.**
 
 ## System Requirements
 
@@ -60,15 +60,9 @@ which is quite extensive and well maintained. Conan is a Python program and can 
 ### 1. Configure Conan
 
 ```bash
-pip install conan==1.56
-conan config install https://github.com/lulzbot3d/conan-config-le.git
+pip install conan==2.7.0
+conan config install https://github.com/lulzbot3d/Conan_LulzBot_Config.git
 conan profile new default --detect --force
-```
-
-Community developers would have to remove the Conan cura-le repository because it requires credentials.
-
-```bash
-conan remote remove cura-le
 ```
 
 ### 2. Clone pyArcusLE
@@ -84,7 +78,7 @@ cd pyArcusLE
 
 ```bash
 conan install . --build=missing --update
-# optional for a specific version: conan install . pyarcusle/<version>@<user>/<channel> --build=missing --update
+# optional for a specific version: conan install . pyarcus/<version>@<user>/<channel> --build=missing --update
 conan build .
 # or
 sip-install
@@ -99,12 +93,12 @@ conan build .
 sip-install
 ```
 
-## Creating a new pyArcusLE Conan package
+## Creating a new pyArcus Conan package
 
-To create a new pyArcusLE Conan package such that it can be used in CuraLE and UraniumLE, run the following command:
+To create a new pyArcus Conan package such that it can be used in CuraLE and UraniumLE, run the following command:
 
 ```shell
-conan create . pyarcusle/<version>@<username>/<channel> --build=missing --update
+conan create . pyarcus/<version>@<username>/<channel> --build=missing --update
 ```
 
 This package will be stored in the local Conan cache (`~/.conan/data` or `C:\Users\username\.conan\data` ) and can be used in downstream
@@ -116,27 +110,27 @@ You can also specify the override at the commandline, to use the newly created p
 command in the root of the consuming project, with:
 
 ```shell
-conan install . -build=missing --update --require-override=pyarcusle/<version>@<username>/<channel>
+conan install . -build=missing --update --require-override=pyarcus/<version>@<username>/<channel>
 ```
 
-## Developing pyArcusLE In Editable Mode
+## Developing pyArcus In Editable Mode
 
 You can use your local development repository downsteam by adding it as an editable mode package.
 This means you can test this in a consuming project without creating a new package for this project every time.
 
 ```bash
-    conan editable add . pyarcusle/<version>@<username>/<channel>
+    conan editable add . pyarcus/<version>@<username>/<channel>
 ```
 
 Then in your downsteam projects (CuraLE) root directory override the package with your editable mode package.
 
 ```shell
-conan install . -build=missing --update --require-override=pyarcusle/<version>@<username>/<channel>
+conan install . -build=missing --update --require-override=pyarcus/<version>@<username>/<channel>
 ```
 
-## pyArcusLE python module
+## pyArcus python module
 
-This repository contains a Python module named pyArcusLE. To build it, [sip](https://pypi.org/project/sip/) 6.5.1 needs to be used to generate the C/C++ source code. UltiMaker created a build tool for this called [sipbuildtool, the repo for which we have also forked](https://github.com/lulzbot3d/conan-lulzbot-index/recipes/sipbuildtool/conanfile.py), which is automatically installed when you run the `conan install` command. This will set up a temporary virtual Python environment, install sip and generate the C/C++ source code. The virtual Python environment is then removed. Downside of this method is that Conan should be installed with the system Python, not the virtual Python environment.
+This repository contains a Python module named pyArcus. To build it, [sip](https://pypi.org/project/sip/) 6.5.1 needs to be used to generate the C/C++ source code. UltiMaker created a build tool for this called [sipbuildtool, the repo for which we have also forked](https://github.com/lulzbot3d/Conan_LulzBot_Index/recipes/sipbuildtool/conanfile.py), which is automatically installed when you run the `conan install` command. This will set up a temporary virtual Python environment, install sip and generate the C/C++ source code. The virtual Python environment is then removed. Downside of this method is that Conan should be installed with the system Python, not the virtual Python environment.
 
 ### Usage
 

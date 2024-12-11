@@ -14,7 +14,7 @@ required_conan_version = ">=2.7.0"
 
 
 class PyArcusLEConan(ConanFile):
-    name = "pyarcusle"
+    name = "pyarcus"
     license = "LGPL-3.0"
     author = "Ultimaker B.V., FAME3D LLC."
     url = "https://github.com/lulzbot3d/pyArcusLE"

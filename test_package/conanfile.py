@@ -39,4 +39,4 @@ class PyArcusLETestConan(ConanFile):
                 print(f"WARNING: {str(ex)}")
             ret_val = test_buf.getvalue()
             if "True" not in ret_val:
-                raise ConanException("pyArcusLE wasn't built correctly!")
+                raise ConanException("pyArcus wasn't built correctly!")
