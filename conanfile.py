@@ -72,7 +72,6 @@ class PyArcusLEConan(ConanFile):
     def requirements(self):
         for req in self.conan_data["requirements"]:
             self.requires(req)
-        self.requires("protobuf/3.21.12", transitive_headers=True)
         self.requires("cpython/3.12.2")
 
     def validate(self):
